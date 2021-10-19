@@ -10,7 +10,6 @@ class DrawF
 {
     static public void drawF(int L)
     {
-        // Comment
         for (int j = 0; j < L; j++) {
             System.out.print("*");
         }
