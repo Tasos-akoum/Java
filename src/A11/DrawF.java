@@ -10,6 +10,7 @@ class DrawF
 {
     static public void drawF(int L)
     {
+    	//commend2
         for (int j = 0; j < L; j++) {
             System.out.print("*");
         }
