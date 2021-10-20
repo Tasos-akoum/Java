@@ -60,11 +60,13 @@ class DrawF
 
      }
 
-     static void ReadInt(int L)
+     static int ReadInt()
      {
+         int L;
          System.out.println("Type a new integer");
          Scanner in = new Scanner(System.in);
          L = in.nextInt();
+         return L;
      }
 
 
@@ -88,45 +90,44 @@ class DrawF
             System.exit(0);
         }
 
-        if(M.equals("c"))
+        switch (M)
         {
-            drawF(L);
-        }
-        else if(M.equals("w"))
-        {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            PrintStream ps = new PrintStream(baos);
-            PrintStream old = System.out;
-            System.setOut(ps);
-            drawF(L);
-            System.out.flush();
-            System.setOut(old);
-            JOptionPane.showMessageDialog(null, baos.toString(), "exit window", JOptionPane.INFORMATION_MESSAGE);
-        }
-        else if(M.equals("f"))
-        {
-            try
-            {
-                File file = new File("f.html");
-                PrintWriter writer = new PrintWriter(file);
-                writer.write("<!DOCTYPE html>\n");
-                writer.write("<html>\n");
-                writer.write("<head>\n");
-                writer.write("<meta http-equiv= \"content-type\" content=\"text/html;charset=utf-8\"/>\n");
-                writer.write("</head>\n");
-                writer.write("<body><font size=\"" + L + "\">F with font size =" + L +"</font></body>\n");
-                writer.write("</html>\n");
-                writer.close();
-            }
-            catch(Exception e)
-            {
-                System.err.println("Exception: " + e);
-                System.exit(1);
-            }
-        }
-        else if(M.equals("g"))
-        {
-            DrawHgraphics(L);
+            case "c":
+                drawF(L);
+                break;
+            case "w":
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                PrintStream ps = new PrintStream(baos);
+                PrintStream old = System.out;
+                System.setOut(ps);
+                drawF(L);
+                System.out.flush();
+                System.setOut(old);
+                JOptionPane.showMessageDialog(null, baos.toString(), "exit window", JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case "f":
+                try
+                {
+                    File file = new File("f.html");
+                    PrintWriter writer = new PrintWriter(file);
+                    writer.write("<!DOCTYPE html>\n");
+                    writer.write("<html>\n");
+                    writer.write("<head>\n");
+                    writer.write("<meta http-equiv= \"content-type\" content=\"text/html;charset=utf-8\"/>\n");
+                    writer.write("</head>\n");
+                    writer.write("<body><font size=\"" + L + "\">F with font size =" + L +"</font></body>\n");
+                    writer.write("</html>\n");
+                    writer.close();
+                }
+                catch(Exception e)
+                {
+                    System.err.println("Exception: " + e);
+                    System.exit(1);
+                }
+                break;
+            case "g":
+                DrawHgraphics(L);
+                break;
         }
 
         if(L > 3)
@@ -138,7 +139,7 @@ class DrawF
         {
             if(!M.equals("w"))
             {
-                ReadInt(L);
+                L = ReadInt();
             }
             else
             {
