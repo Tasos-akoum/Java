@@ -96,19 +96,24 @@ class DrawF
                 drawF(L);
                 break;
             case "w":
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                PrintStream ps = new PrintStream(baos);
-                PrintStream old = System.out;
-                System.setOut(ps);
-                drawF(L);
-                System.out.flush();
-                System.setOut(old);
-                JOptionPane.showMessageDialog(null, baos.toString(), "exit window", JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    PrintStream ps = new PrintStream(baos);
+                    PrintStream old = System.out;
+                    System.setOut(ps);
+                    drawF(L);
+                    System.out.flush();
+                    System.setOut(old);
+                    JOptionPane.showMessageDialog(null, baos.toString(), "exit window", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    System.err.println("Exception: " + e);
+                    System.exit(2);
+                }
                 break;
             case "f":
                 try
                 {
-                    File file = new File("f.html");
+                    File file = new File("f" + L + ".html");
                     PrintWriter writer = new PrintWriter(file);
                     writer.write("<!DOCTYPE html>\n");
                     writer.write("<html>\n");

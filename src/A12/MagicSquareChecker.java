@@ -53,20 +53,71 @@ class MagicSquareChecker
         return sum;
     }
 
-    public static boolean checkIsMagic(int[][] s)
+    private  static boolean hasDuplicates(int[][] s)
     {
-        for(int i = 1; i < s.length; i++)
+        int k,l;
+
+        for(int i = 0; i < s.length; i++)
         {
-            if(sumOfRow(s,i) != sumOfRow(s,0))
-                return false;
-            else if(sumOfColumn(s,i) != sumOfColumn(s,0))
-                return false;
+            for(int j = 0; j < s.length; j++)
+            {
+                if(j == s.length - 1) {
+                    k = i + 1;
+                    l = 0;
+                }
+                else
+                {
+                    k = i;
+                    l = j + 1;
+                }
+
+                while(k < s.length)
+                {
+                    if(s[i][j] == s[k][l])
+                        return true;
+
+                    if(l == s.length - 1)
+                    {
+                        l = 0;
+                        k++;
+                    }
+                    else
+                        l++;
+                }
+            }
         }
 
-        if(sumOfColumn(s,0) != sumOfRow(s,0))
+        return false;
+    }
+    public static int getMagicNumber(int[][] s)
+    {
+        return sumOfDiagonal1(s); //Here we use the sumOfDiagonal1 to get the magic number as it is the most efficient out of all the  methods
+    }
+
+    public static boolean checkIsMagic(int[][] s)
+    {
+        int magicNumber = getMagicNumber(s);
+
+        if(hasDuplicates(s))
+        {
+            System.out.println("The array has at least one duplicate number");
             return false;
-        if(sumOfDiagonal2(s) != sumOfDiagonal1(s) || sumOfDiagonal2(s) != sumOfRow(s,0))
+        }
+        for(int i = 0; i < s.length; i++)
+        {
+            if(sumOfRow(s,i) != magicNumber || sumOfColumn(s,i) != magicNumber)
+            {
+                System.out.println("Not all rows and columns have the same sum");
+                return false;
+            }
+        }
+
+        //We don't need to check for the magic number of the first diagonal because it is stored in the maginNumber variable
+        if(sumOfDiagonal2(s) != magicNumber)
+        {
+            System.out.println("The sum of the diagonal does not equal that of the rows and columns");
             return false;
+        }
 
         return true;
     }
@@ -93,6 +144,10 @@ class MagicSquareChecker
             }
         }
 
+        if(checkIsMagic(array))
+            System.out.println("It is a magic square");
+        else
+            System.out.println("It is not a magic square");
 
     }
 }
