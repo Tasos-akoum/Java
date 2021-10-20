@@ -1,7 +1,7 @@
 #!/bin/sh
 echo "Type the commit"
 read change
-ech 'init github commit'
-git add *
+echo 'init github commit'
+git add src
 git commit -am "new commit:, $change"
 git push 
