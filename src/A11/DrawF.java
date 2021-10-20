@@ -4,13 +4,17 @@ import javax.swing.JOptionPane;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.QuadCurve2D;
 import java.io.File;
 
 class DrawF
 {
     static public void drawF(int L)
     {
-    	//commend2
         for (int j = 0; j < L; j++) {
             System.out.print("*");
         }
@@ -33,6 +37,26 @@ class DrawF
             }
         }
     }
+
+     static void DrawHgraphics(int L)
+     {
+         Frame f  = new Frame("Drawing F"){
+             public void paint(Graphics g)
+             {
+                 Graphics2D g2 = (Graphics2D) g;
+                 g2.draw(new Line2D.Double(50, 50, 50, 50 + L*50));
+                 QuadCurve2D q = new QuadCurve2D.Float();
+                 q.setCurve(50,50,L * 50,L + 50,L * 15,40 + L* 15);
+                 g2.draw(q);
+                 g2.draw(new Line2D.Double(50 - L,50 + L*25, L * 25,50 + L*25));
+             }
+         };
+
+         f.setSize(400,400);
+         f.setVisible(true);
+
+     }
+
 
     public static void main(String[] args) {
         if(args.length != 2){
@@ -88,6 +112,10 @@ class DrawF
                 System.err.println("Exception: " + e);
                 System.exit(1);
             }
+        }
+        else if(M.equals("g"))
+        {
+            DrawHgraphics(L);
         }
     }
 
