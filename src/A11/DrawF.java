@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.QuadCurve2D;
 import java.io.File;
+import java.util.Scanner;
 
 class DrawF
 {
@@ -36,6 +37,8 @@ class DrawF
                 System.out.println("*");
             }
         }
+
+        System.out.print("\n");
     }
 
      static void DrawHgraphics(int L)
@@ -56,6 +59,14 @@ class DrawF
          f.setVisible(true);
 
      }
+
+     static void ReadInt(int L)
+     {
+         System.out.println("Type a new integer");
+         Scanner in = new Scanner(System.in);
+         L = in.nextInt();
+     }
+
 
 
     public static void main(String[] args) {
@@ -117,6 +128,23 @@ class DrawF
         {
             DrawHgraphics(L);
         }
-    }
 
+        if(L > 3)
+        {
+            L = L - 1;
+            main(new String[] {M, Integer.toString(L) });
+        }
+        else
+        {
+            if(!M.equals("w"))
+            {
+                ReadInt(L);
+            }
+            else
+            {
+                L = Integer.parseInt(JOptionPane.showInputDialog("Give me a new integer", 4));
+            }
+            main(new String[] {M, Integer.toString(L) });
+        }
+    }
 }
