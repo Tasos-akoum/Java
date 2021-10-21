@@ -4,11 +4,35 @@ import java.util.Scanner;
 
 class MagicSquareChecker
 {
+    public static void printArray(int[][] array)
+    {
+        for(int i = 0; i < array.length * 6; i++)
+        {
+            System.out.print("-");
+        }
+
+        System.out.println();
+
+        for(int i = 0; i < array.length; i++)
+        {
+            for(int j = 0; j < array.length; j++)
+            {
+                System.out.printf("|%5d", array[i][j]);
+            }
+            System.out.print("|");
+            System.out.println();
+            for(int k = 0; k < array.length * 6; k++)
+            {
+                System.out.print("-");
+            }
+            System.out.println();
+        }
+    }
+
     public static int ReadInteger()
     {
         Scanner in = new Scanner(System.in);
-        int a = in.nextInt();
-        return a;
+        return in.nextInt();
     }
 
     private static int sumOfRow(int [][] s ,int k)
@@ -143,6 +167,8 @@ class MagicSquareChecker
                 array[i][j] = ReadInteger();
             }
         }
+
+        printArray(array);
 
         if(checkIsMagic(array))
             System.out.println("It is a magic square");
