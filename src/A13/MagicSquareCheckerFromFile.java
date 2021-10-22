@@ -5,29 +5,54 @@ import java.io.*;
 import java.lang.String;
 
 class MagicSquareCheckerFromFile{
-    private static void readFile(File file)
+    private static int[][] readFile(File file)
     {
-
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String row;
+            int lines = 0;
 
-            while ((row = br.readLine()) != null) {
-                String[] data = row.split(",");
-                for(String str : data)
-                {
-                    System.out.println(str);
-                }
+            while (br.readLine() != null) {
+                lines++;
             }
 
+            br.close();
+            br = new BufferedReader((new FileReader(file)));
+            int[][] array = new int[lines][lines];
+
+            int i = 0;
+            while((row = br.readLine()) != null)
+            {
+                String[] data = row.split(",");
+                if(data.length != lines)
+                {
+                    System.err.println("This square is not of the type n*n");
+                    System.exit(2);
+                }
+
+                try {
+                    int j = 0;
+                    for (String str : data) {
+                        array[i][j] = Integer.parseInt(str);
+                        j++;
+                    }
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
+
+                i++;
+            }
+
+            return array;
 
         } catch(IOException e) {
             System.err.println(e.getMessage());
             System.exit(2);
         }
 
-
+        return null;
     }
+
     private static File getFile()
     {
         JFileChooser fileChooser = new JFileChooser();
@@ -68,9 +93,6 @@ class MagicSquareCheckerFromFile{
             System.exit(1);
         }
 
-        readFile(file);
-
-
-
+        int[][] array = readFile(file);
     }
 }
