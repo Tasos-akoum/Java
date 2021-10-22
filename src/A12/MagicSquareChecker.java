@@ -2,7 +2,7 @@ package A12;
 
 import java.util.Scanner;
 
-class MagicSquareChecker
+public class MagicSquareChecker
 {
     public static void printArray(int[][] array)
     {
@@ -10,7 +10,7 @@ class MagicSquareChecker
         {
             System.out.print("-");
         }
-
+        System.out.print("-");
         System.out.println();
 
         for(int i = 0; i < array.length; i++)
@@ -25,6 +25,7 @@ class MagicSquareChecker
             {
                 System.out.print("-");
             }
+            System.out.print("-");
             System.out.println();
         }
     }
@@ -113,6 +114,7 @@ class MagicSquareChecker
 
         return false;
     }
+
     public static int getMagicNumber(int[][] s)
     {
         return sumOfDiagonal1(s); //Here we use the sumOfDiagonal1 to get the magic number as it is the most efficient out of all the  methods
@@ -136,7 +138,7 @@ class MagicSquareChecker
             }
         }
 
-        //We don't need to check for the magic number of the first diagonal because it is stored in the maginNumber variable
+        //We don't need to check for the magic number of the first diagonal because it is stored in the magic Number variable
         if(sumOfDiagonal2(s) != magicNumber)
         {
             System.out.println("The sum of the diagonal does not equal that of the rows and columns");
@@ -171,7 +173,7 @@ class MagicSquareChecker
         printArray(array);
 
         if(checkIsMagic(array))
-            System.out.println("It is a magic square");
+            System.out.println("It is a magic square and the magic number is: " + getMagicNumber(array));
         else
             System.out.println("It is not a magic square");
 

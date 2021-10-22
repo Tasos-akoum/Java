@@ -3,6 +3,7 @@ package A13;
 import javax.swing.JFileChooser;
 import java.io.*;
 import java.lang.String;
+import A12.MagicSquareChecker;
 
 class MagicSquareCheckerFromFile{
     private static int[][] readFile(File file)
@@ -38,10 +39,12 @@ class MagicSquareCheckerFromFile{
                     }
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
+                    System.exit(3);
                 }
 
                 i++;
             }
+            br.close();
 
             return array;
 
@@ -71,6 +74,23 @@ class MagicSquareCheckerFromFile{
 
     }
 
+    private static File getFolder()
+    {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select a directory");
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int userSelection = fileChooser.showSaveDialog(null);
+        if(userSelection == JFileChooser.APPROVE_OPTION)
+        {
+            File file = fileChooser.getSelectedFile();
+            String filepath = file.getAbsolutePath();
+            System.out.println("the path of the selected directory is: " + filepath);
+
+            return file;
+        }
+
+        return null;
+    }
 
     public static void main(String[] args) {
 
@@ -82,7 +102,7 @@ class MagicSquareCheckerFromFile{
                 if (!name.substring(name.lastIndexOf(".")).equals(".txt"))
                 {
                     System.err.println("The file should be of the type .txt");
-                    System.exit(1);
+                    System.exit(0);
                 }
             } catch(Exception e) {
                 System.err.println(e.getMessage());
@@ -93,6 +113,35 @@ class MagicSquareCheckerFromFile{
             System.exit(1);
         }
 
-        int[][] array = readFile(file);
+        int[][] square = readFile(file);
+        MagicSquareChecker.printArray(square);
+
+        if(MagicSquareChecker.checkIsMagic(square)) {
+            System.out.println("It is a magic square and the magic number is: " + MagicSquareChecker.getMagicNumber(square));
+            File folder = getFolder();
+            if(folder != null && folder.exists())
+            {
+                try {
+                    File file2 = new File(folder + "/MagicSquareSavedFile.txt");
+                    PrintWriter writer = new PrintWriter(file2);
+                    for(int i = 0; i < square.length; i++)
+                    {
+                        for(int j = 0; j < square.length; j++)
+                        {
+                            writer.write(square[i][j] + ", ");
+                        }
+                        writer.write("\n");
+                    }
+
+                    writer.write("\nMagic square with magic number: " + MagicSquareChecker.getMagicNumber(square));
+                    writer.close();
+                } catch(FileNotFoundException e) {
+                    System.err.println(e.getMessage());
+                    System.exit(4);
+                }
+            }
+        }
+        else
+            System.out.println("It is not a magic square");
     }
 }
