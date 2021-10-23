@@ -116,9 +116,11 @@ class MagicSquareCheckerFromFile{
         int[][] square = readFile(file);
         MagicSquareChecker.printArray(square);
 
-        if(MagicSquareChecker.checkIsMagic(square)) {
+        if(MagicSquareChecker.checkIsMagic(square))
+        {
             System.out.println("It is a magic square and the magic number is: " + MagicSquareChecker.getMagicNumber(square));
             File folder = getFolder();
+
             if(folder != null && folder.exists())
             {
                 try {

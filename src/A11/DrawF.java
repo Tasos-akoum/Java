@@ -1,15 +1,12 @@
 package A11;
  //comment
 import javax.swing.JOptionPane;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.QuadCurve2D;
-import java.io.File;
 import java.util.Scanner;
 
 class DrawF
@@ -106,7 +103,7 @@ class DrawF
                     System.setOut(old);
                     JOptionPane.showMessageDialog(null, baos.toString(), "exit window", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception e) {
-                    System.err.println("Exception: " + e);
+                    System.err.println(e.getMessage());
                     System.exit(2);
                 }
                 break;
@@ -124,9 +121,9 @@ class DrawF
                     writer.write("</html>\n");
                     writer.close();
                 }
-                catch(Exception e)
+                catch(FileNotFoundException e)
                 {
-                    System.err.println("Exception: " + e);
+                    System.err.println(e.getMessage());
                     System.exit(1);
                 }
                 break;
