@@ -1,8 +1,10 @@
 package A13;
 
-import javax.swing.JFileChooser;
+import javax.swing.*;
 import java.io.*;
 import java.lang.String;
+import java.net.URL;
+
 import A12.MagicSquareChecker;
 
 class MagicSquareCheckerFromFile{
@@ -56,6 +58,56 @@ class MagicSquareCheckerFromFile{
         return null;
     }
 
+    private static int[][] download(String address) {
+        try {
+            URL url = new URL(address);
+            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+            int lines = 0;
+            String row;
+
+            while (in.readLine() != null) {
+                lines++;
+            }
+            in.close();
+
+            in = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+            int[][] array = new int[lines][lines];
+
+            int i = 0;
+            while((row = in.readLine()) != null)
+            {
+                String[] data = row.split(",");
+                if(data.length != lines)
+                {
+                    System.err.println("This square is not of the type n*n");
+                    System.exit(2);
+                }
+
+                try {
+                    int j = 0;
+                    for (String str : data) {
+                        array[i][j] = Integer.parseInt(str);
+                        j++;
+                    }
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    System.exit(3);
+                }
+
+                i++;
+            }
+            in.close();
+
+            return array;
+
+        } catch(IOException e) {
+            System.err.println(e.getMessage());
+            System.exit(2);
+        }
+
+        return null;
+    }
+
     private static File getFile()
     {
         JFileChooser fileChooser = new JFileChooser();
@@ -94,26 +146,46 @@ class MagicSquareCheckerFromFile{
 
     public static void main(String[] args) {
 
-        File file = getFile();
-        if(file !=null && file.exists())
+        File file;
+        System.out.println("Do you want to choose a file from your computer(Type 0) or from a URL(Type 1)");
+        int answer = MagicSquareChecker.ReadInteger();
+        int[][] square = {};
+
+        if(answer == 0)
         {
-            try {
-                String name = file.getName();
-                if (!name.substring(name.lastIndexOf(".")).equals(".txt"))
-                {
-                    System.err.println("The file should be of the type .txt");
-                    System.exit(0);
+            file = getFile();
+            if(file !=null && file.exists())
+            {
+                try {
+                    String name = file.getName();
+                    if (!name.substring(name.lastIndexOf(".")).equals(".txt"))
+                    {
+                        System.err.println("The file should be of the type .txt");
+                        System.exit(0);
+                    }
+                } catch(Exception e) {
+                    System.err.println(e.getMessage());
                 }
-            } catch(Exception e) {
-                System.err.println(e.getMessage());
             }
+            else {
+                System.err.println("Failed to select file");
+                System.exit(1);
+            }
+
+            square = readFile(file);
         }
-        else {
-            System.err.println("Failed to select file");
+        else if(answer == 1)
+        {
+            String address = JOptionPane.showInputDialog("Type the URL you want to use ","");
+            square = download(address);
+        }
+        else
+        {
+            System.err.println("Wrong answer...terminating program");
             System.exit(1);
         }
 
-        int[][] square = readFile(file);
+
         MagicSquareChecker.printArray(square);
 
         if(MagicSquareChecker.checkIsMagic(square))

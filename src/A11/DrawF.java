@@ -1,5 +1,4 @@
 package A11;
- //comment
 import javax.swing.JOptionPane;
 import java.io.*;
 import java.awt.Frame;
