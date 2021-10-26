@@ -3,7 +3,7 @@ package A13;
 import javax.swing.*;
 import java.io.*;
 import java.lang.String;
-import java.net.URL;
+import A13.Downloader;
 
 import A12.MagicSquareChecker;
 
@@ -47,56 +47,6 @@ class MagicSquareCheckerFromFile{
                 i++;
             }
             br.close();
-
-            return array;
-
-        } catch(IOException e) {
-            System.err.println(e.getMessage());
-            System.exit(2);
-        }
-
-        return null;
-    }
-
-    private static int[][] download(String address) {
-        try {
-            URL url = new URL(address);
-            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-            int lines = 0;
-            String row;
-
-            while (in.readLine() != null) {
-                lines++;
-            }
-            in.close();
-
-            in = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-            int[][] array = new int[lines][lines];
-
-            int i = 0;
-            while((row = in.readLine()) != null)
-            {
-                String[] data = row.split(",");
-                if(data.length != lines)
-                {
-                    System.err.println("This square is not of the type n*n");
-                    System.exit(2);
-                }
-
-                try {
-                    int j = 0;
-                    for (String str : data) {
-                        array[i][j] = Integer.parseInt(str);
-                        j++;
-                    }
-                } catch (Exception e) {
-                    System.err.println(e.getMessage());
-                    System.exit(3);
-                }
-
-                i++;
-            }
-            in.close();
 
             return array;
 
@@ -177,7 +127,7 @@ class MagicSquareCheckerFromFile{
         else if(answer == 1)
         {
             String address = JOptionPane.showInputDialog("Type the URL you want to use ","");
-            square = download(address);
+            square = Downloader.download(address);
         }
         else
         {
