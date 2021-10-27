@@ -1,7 +1,7 @@
 package A14;
 
+import java.util.Scanner;
 import java.util.stream.IntStream;
-import A14.Sudoku;
 
 public class BacktrackingAlgorithm {
 
@@ -13,24 +13,57 @@ public class BacktrackingAlgorithm {
     private static final int MIN_VALUE = 1;
     private static final int MAX_VALUE = 9;
 
-    private static int[][] board = {
-            {8, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 3, 6, 0, 0, 0, 0, 0},
-            {0, 7, 0, 0, 9, 0, 2, 0, 0},
-            {0, 5, 0, 0, 0, 7, 0, 0, 0},
-            {0, 0, 0, 0, 4, 5, 7, 0, 0},
-            {0, 0, 0, 1, 0, 0, 0, 3, 0},
-            {0, 0, 1, 0, 0, 0, 0, 6, 8},
-            {0, 0, 8, 5, 0, 0, 0, 1, 0},
-            {0, 9, 0, 0, 0, 0, 4, 0, 0}
-    };
+    private static int[][] board = new int[9][9];
 
     public static void main(String[] args) {
         BacktrackingAlgorithm solver = new BacktrackingAlgorithm();
-        solver.solve(board);
-        solver.printBoard();
+        Sudoku sudoku = new Sudoku();
+
+        System.out.println("Type how many board you want to create");
+        int N = readInt();
+        System.out.println("Type how many cells you want to be empty");
+        int x = readInt();
+
+        int count = 1;
+        int invalid_count = 0;
+        int unsolvable_count = 0;
+
+        long start = System.currentTimeMillis();
+        while(count <= N){
+            board = Sudoku.createBoard(x);
+            if(Sudoku.isValidBoard(board)){
+                if(sudoku.isSolvableBoard(board)) {
+                    System.out.println("Board #" + count);
+                    solver.printBoard();
+
+                    System.out.println("Solution of the Board #" + count);
+                    solver.solve(board);
+                    solver.printBoard();
+
+                    count++;
+                } else {
+                    unsolvable_count++;
+                }
+            } else {
+                invalid_count++;
+            }
+        }
+
+        long end = System.currentTimeMillis();
+        float sec = (end - start) / 1000F;
+
+        System.out.printf("%-25s:%-5d%n","Empty cells per board",x);
+        System.out.printf("%-25s:%-5d%n","Valid boards created",N);
+        System.out.printf("%-25s:%-5d%n","Invalid boards created",invalid_count);
+        System.out.printf("%-25s:%-5d%n","Unsolvable boards created",unsolvable_count);
+        System.out.printf("%-25s:%-3.3f%n","Elapsed time in seconds", sec);
+
     }
 
+    private static int readInt(){
+        Scanner in = new Scanner(System.in);
+        return in.nextInt();
+    }
     private void printBoard() {
         for (int row = BOARD_START_INDEX; row < BOARD_SIZE; row++) {
             for (int column = BOARD_START_INDEX; column < BOARD_SIZE; column++) {
