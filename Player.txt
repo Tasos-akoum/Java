@@ -1,0 +1,36 @@
+Turn:
+Manages the turns.
+Checks if the player has played and lets the other player play
+Updates the turn number(Months, days)
+
+
+Player:
+Has id, money, loan, bills and an arraylist which stores the cards he has picked
+Stores each card deal he has picked up
+Can: Roll Dice, Get loan, End turn and can see the cards he has picked up 
+
+Cards:
+Places randomly on each tile. Everytime a player picks a card it disappears from
+the board and goes in the players deal cards
+
+Controller:
+Starts the game and sets everything up for play:
+initializes the players
+Chooses randomly which player will start first
+Chooses how many months the game will last
+initializes 31 tiles and the jackpot tile
+initialized and randomized all the cards
+Gives each player 3500 dollars
+Selects the first player
+
+Checks the game states(Who wins, if its the last turn etc)
+shows how many months are left
+
+View:
+The interface in which the users interact. Has buttons for every action a playercan do, shows the board and every information the player may need
+
+Position: 
+abstract class that keeps the position of each subclass it may need
+
+Dice:
+Gets an integer from 1 to 6 randomly and moves the player.
