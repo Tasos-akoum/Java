@@ -8,12 +8,13 @@ import Model.Player.Turn;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Controller {
-    private boolean hasStarted, emptyTable;
+    private boolean hasStarted, emptyBoard;
     private final character c1, c2;
     private Board board;
     private Turn turn = new Turn();
     private Dice dice;
 
+    //Constructor: Constructs
     public Controller(){
         board = new Board();
         dice = new Dice();
@@ -33,17 +34,17 @@ public class Controller {
             turn.setCurrentPlayer(c2);
 
         this.hasStarted = false;
-        this.emptyTable = true;
+        this.emptyBoard = true;
     }
 
-    public void init_cards(){
-
-    }
-
+    //Observer: Returns true if the board is empty, otherwise returns false
+    //Postcondition: Returned if the board is empty
     public boolean boardIsEmpty(){
-        return this.emptyTable;
+        return this.emptyBoard;
     }
 
+    //Observer: Returns true if the game has started, otherwise returns false
+    //Postcondition: Return if the game has started
     public boolean hasStarted(){
         return this.hasStarted;
     }
@@ -55,21 +56,29 @@ public class Controller {
         this.hasStarted = b;
     }
 
+    //Transformer(mutative): Changes player position on the board
+    //Postcondition: Player position changed
+    //@param c is the character who will have his position changed
     public void changePlayerPosition(character c){
         c.setPosition(c.getPosition() + dice.getValue());
         if(c.getPosition() > 31)
             c.setPosition(1);
     }
 
+    //Transformer(mutative): Changes who the current player is
+    //Postcondition: Current player is changed
     public void changeCurrentPlayer(){
         turn.setCurrentPlayer((turn.getCurrentPlayer().getId() == 1 ? c2 : c1));
     }
 
+    //Transformer(mutative): Updates the board with the new information
+    //Postcondition: Board updated with new info
     public void updateBoard(){
 
     }
 
-    //Accessor
+    //Accessor(selector): Returns the winner of the game or declares draw
+    //Postcondition: Returned the winner or draw (0 for draw)
     public int getWinner(){
         if(c1.getScore() > c2.getScore())
             return 1;

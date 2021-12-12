@@ -17,7 +17,6 @@ interface PlayerInterface{
     boolean hasEndedTurn();
     boolean hasFinished();
 
-
     void sellCard(Card card);
     void buyCard(Card card);
 

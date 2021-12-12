@@ -1,14 +1,19 @@
 package Model.Player;
 
 import Model.Player.Tile.Tile;
+import Model.Player.card.DealCard;
+import Model.Player.card.MailCards.MailCard;
 
+//Class Board: The class that makes the board ready for the start of the game
 public class Board {
-    private Tile[] board;
+    private Tile[] tiles;
+    private DealCard[][] dealCards = new DealCard[20][8];
+    private MailCard[][] mailCards = new MailCard[48][4];
     private boolean isEmpty;
 
     //Constructor: Constructs a new board
     public Board(){
-        this.board = new Tile[31];
+        this.tiles = new Tile[31];
         this.isEmpty = true;
     }
 
@@ -18,11 +23,17 @@ public class Board {
 
     }
 
+    //Transformer(mutative): Initialized the cards on the board
+    //Postcondition: Initialized the cards on the board
+    public void init_cards(){
+
+    }
+
     //Accessor(selector): Returns the tile in the i position of the board
     //Postcondition: Returned the selected tile
     //@param i is the index on the board
     public Tile getTile(int i){
-        return board[i];
+        return tiles[i];
     }
 
     //Transformer(mutative): Sets the tile in the i position of the board
@@ -30,6 +41,6 @@ public class Board {
     //@param i is the index on the board
     //@param tile is the new tile that will be set on the board
     public void setTile(int i, Tile tile){
-        this.board[i] = tile;
+        this.tiles[i] = tile;
     }
 }

@@ -11,7 +11,15 @@ public abstract class Tile {
         this.type = type;
     }
 
+    //Transformer(mutative): Does some action
+    //Postcondition: Action complete
     public abstract void action(character c);
+
+    //Accessor(selector): Returns the type of the tile
+    //Postcondition: Type returned
+    public String getType(){
+        return this.type;
+    }
 
 }
 
