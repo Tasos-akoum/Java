@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Project/Controller" isTestSource="false" packagePrefix="controller" />
       <sourceFolder url="file://$MODULE_DIR$/Project/Model" isTestSource="false" packagePrefix="Model.Player" />
       <sourceFolder url="file://$MODULE_DIR$/Project/View" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Project/src" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
