@@ -68,6 +68,7 @@ public class character implements PlayerInterface{
     //Postcondition: Dice rolled and its value changed
     public void rollDice(){
         this.dice.rollDice();
+        roll = false;
     }
 
     //Observer: Returns true if the player has ended his turn otherwise returns false

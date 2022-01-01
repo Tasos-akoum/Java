@@ -59,9 +59,11 @@ public class Controller {
     //Postcondition: Player position changed
     //@param c is the character who will have his position changed
     public void changePlayerPosition(character c){
-        c.setPosition(c.getPosition() + c.getDice().getValue());
-        if(c.getPosition() > 31)
-            c.setPosition(1);
+        if(c.canMove()) {
+            c.setPosition(c.getPosition() + c.getDice().getValue());
+            if (c.getPosition() > 31)
+                c.setPosition(1);
+        }
     }
 
     //Transformer(mutative): Changes who the current player is

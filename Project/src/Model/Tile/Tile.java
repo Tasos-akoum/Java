@@ -4,7 +4,7 @@ import Model.Player.character;
 import Model.card.MailCards.PayTheNeighborCard;
 
 //Abstract class Tile implements the basic functionality of the tiles
-public abstract class Tile extends PayTheNeighborCard {
+public abstract class Tile{
     private final String type;
 
     //Constructor: Constructs a new tile with a type
