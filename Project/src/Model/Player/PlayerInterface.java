@@ -21,10 +21,14 @@ interface PlayerInterface{
     boolean hasEndedTurn();
     boolean hasFinished();
 
+    int calculateLoan(int amount);
+    void replenishMoney();
 
+    void drawCard(Card card);
     void rollDice();
     void sellCard(Card card);
     void buyCard(Card card);
+    void addCard(Card card);
 
     void setMoney(int money);
     void setLoan(int loan);
@@ -34,6 +38,10 @@ interface PlayerInterface{
     void setPosition(int position);
     void setEndTurn(boolean b);
     void Played();
+
+    void addMoney(int money);
+    void addLoan(int loan);
+    void addBills(int bills);
 
 }
 

@@ -1,5 +1,6 @@
 package Model.card.MailCards;
 
+import Controller.Controller;
 import Model.Player.character;
 
 //Class AdvertisementCard implements advertisement cards
@@ -13,7 +14,7 @@ public class AdvertisementCard extends MailCard{
     //Transformer(mutative): Character sells the card for the euro value
     //Postcondition: Sold the card and got the money
     //@param c is the current character
-    public void action(character c){
-        
+    public void action(Controller g){
+        g.getCurrentPlayer().addMoney(this.getEuro());
     }
 }

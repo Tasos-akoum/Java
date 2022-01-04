@@ -1,5 +1,6 @@
 package Model.card;
 
+import Controller.Controller;
 import Model.Player.character;
 
 //Class DealCard is the class responsible for creating Deal cards and their logic.
@@ -21,7 +22,16 @@ public class DealCard extends Card{
     //Transformer(mutative):Decides if the player is going to accept the deal and follows through with what needs to happen
     //Postcondition: The deal is either dismissed or accepted
     //@param c is the player that gets the deal
-    public void action(character c){
+    public void action(Controller g){
+        if(g.getCurrentPlayer().getMoney() + g.getCurrentPlayer().getLoan() >= this.cost){
+            g.getCurrentPlayer().addMoney(-this.cost);
+            g.getCurrentPlayer().replenishMoney();
+            g.getCurrentPlayer().addCard(this);
+        }
+        else{
+            g.getCurrentPlayer().addLoan(g.getCurrentPlayer().calculateLoan(this.cost));
+            this.action(g);
+        }
 
     }
 

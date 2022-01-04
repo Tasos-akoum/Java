@@ -1,5 +1,6 @@
 package Model.Tile;
 
+import Controller.Controller;
 import Model.Player.character;
 
 //Class SweepstakesTile implements the sweepstakes tile
@@ -13,7 +14,8 @@ public class SweepstakesTile extends Tile{
     @Override
     //Transformer(mutative): Rolls the dice and wins 1000 * the value of the dice euros
     //Postcondition: Player wins 1000 * dice.getValue() euros
-    public void action(character c){
-
+    public void action(Controller g){
+        g.getCurrentPlayer().rollDice();
+        g.getCurrentPlayer().addMoney(1000 * g.getCurrentPlayer().getDice().getValue());
     }
 }

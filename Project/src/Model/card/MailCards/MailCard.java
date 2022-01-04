@@ -1,5 +1,6 @@
 package Model.card.MailCards;
 
+import Controller.Controller;
 import Model.card.Card;
 import Model.Player.character;
 
@@ -17,7 +18,7 @@ public abstract class MailCard extends Card {
     //Transformer(mutative): Does some action
     //Postcondition: action finished
     //@param c is the current player
-    public abstract void action(character c);
+    public abstract void action(Controller g);
 
     //Accessor(selector): Returns the euro value of the card
     //Postcondition: Returned the euro value

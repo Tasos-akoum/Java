@@ -1,5 +1,6 @@
 package Model.Tile;
 
+import Controller.Controller;
 import Model.Player.character;
 
 //Class RadioContestTile implements the radio contest tile
@@ -14,7 +15,18 @@ public class RadioContestTile extends Tile{
     //Transformer(mutative): Gives 1000 euros to the player who will roll the most value on the dice
     //Postcondition: The player with the most value on the dice gets the 1000 euros
     //@param c is the current player
-    public void action(character c){
+    public void action(Controller g){
+        character currentPlayer = g.getCurrentPlayer();
+        character inactivePlayer = g.getInactivePlayer();
 
+        currentPlayer.rollDice();
+        inactivePlayer.rollDice();
+
+        if(currentPlayer.getDice().getValue() > inactivePlayer.getDice().getValue())
+            currentPlayer.addMoney(1000);
+        else if(currentPlayer.getDice().getValue() < inactivePlayer.getDice().getValue())
+            inactivePlayer.addMoney(1000);
+        else
+            this.action(g);
     }
 }

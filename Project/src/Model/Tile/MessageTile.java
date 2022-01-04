@@ -1,5 +1,6 @@
 package Model.Tile;
 
+import Controller.Controller;
 import Model.Player.character;
 
 //Class MessageTile implements the message tile
@@ -23,7 +24,7 @@ public class MessageTile extends Tile{
     @Override
     //Transformer(mutative):Makes the player draw 1 or 2 mail cards and complete their actions
     //Postcondition: Cards drawn and actions completed
-    public void action(character c) {
+    public void action(Controller g) {
 
     }
 }

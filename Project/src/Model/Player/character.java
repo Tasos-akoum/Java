@@ -90,11 +90,35 @@ public class character implements PlayerInterface{
 
     }
 
+    public void drawCard(Card card){
+
+    }
+
     //Transformer(mutative): Buys a card
     //Postcondition: The card has been bought and is added to they array list
     //@param card is the card that will be bought
     public void buyCard(Card card){
 
+    }
+
+    public void addCard(Card card){
+        cards.add(card);
+    }
+
+    public int calculateLoan(int amount){
+        if(amount <= 1000){
+            return 1000;
+        }
+        else{
+            return ((amount / 1000) + 1) * 1000;
+        }
+    }
+
+    public void replenishMoney(){
+        if(this.money < 0){
+            this.addLoan(this.money);
+            this.money = 0;
+        }
     }
 
     //Transformer(mutative): Sets the endTurn variable to true
@@ -188,6 +212,18 @@ public class character implements PlayerInterface{
     //@param endTurn is the new boolean value of endTurn
     public void setEndTurn(boolean endTurn){
         this.endTurn = endTurn;
+    }
+
+    public void addMoney(int money){
+        this.money += money;
+    }
+
+    public void addLoan(int loan){
+        this.loan += loan;
+    }
+
+    public void addBills(int bills){
+        this.bills += bills;
     }
 
 

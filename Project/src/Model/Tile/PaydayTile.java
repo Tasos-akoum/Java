@@ -1,5 +1,6 @@
 package Model.Tile;
 
+import Controller.Controller;
 import Model.Player.character;
 
 //Class PayDayTile implements the payday tile
@@ -14,7 +15,7 @@ public class PaydayTile extends Tile{
     //Moves the player to the next month and if it's the final month, the player stops playing
     //and completes all the actions that are necessary
     //Postcondition: Actions complete
-    public void action(character c){
+    public void action(Controller g){
 
     }
 }

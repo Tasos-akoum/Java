@@ -5,7 +5,7 @@ import Model.Player.character;
 
 //Class Turn keeps tracks of who needs to play and how many turns the game will last
 public class Turn {
-    private character currentPlayer;
+    private character currentPlayer, inactivePlayer;
     private int currentTurn;
     private final int totalMonths;
 
@@ -14,6 +14,7 @@ public class Turn {
     public Turn(){
         this.currentTurn = 0;
         this.currentPlayer = null;
+        this.inactivePlayer = null;
         this.totalMonths = ThreadLocalRandom.current().nextInt(1,4);
     }
 
@@ -36,11 +37,19 @@ public class Turn {
         return this.currentPlayer;
     }
 
+    public character getInactivePlayer(){
+        return this.inactivePlayer;
+    }
+
     //Transformer(mutative): Sets the character as the current player
     //Postcondition: A new current player has been set
     //@param character p is the new current player
     public void setCurrentPlayer(character p){
         this.currentPlayer = p;
+    }
+
+    public void setInactivePlayer(character c) {
+        this.inactivePlayer = c;
     }
 
     //Observer: Returns true if this turn is the final turn, otherwise returns false

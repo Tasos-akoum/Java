@@ -1,5 +1,6 @@
 package Model.card;
 
+import Controller.Controller;
 import Model.Player.character;
 
 //Abstract class Card is the class that gives basic functionality to all the card instances.
@@ -16,7 +17,7 @@ public abstract class Card {
     //Transformer(mutative): Does some action
     //Postcondition: action complete
     //@param c is the current character
-    public abstract void action(character c);
+    public abstract void action(Controller g);
 
     //Accessor(selector): Returns the type of the card
     //Postcondition: The type has been returned

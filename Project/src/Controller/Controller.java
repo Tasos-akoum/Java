@@ -27,10 +27,14 @@ public class Controller {
         c1.setMoney(3500);
         c2.setMoney(3500);
 
-        if(ThreadLocalRandom.current().nextInt(1,3) == 1)
+        if(ThreadLocalRandom.current().nextInt(1,3) == 1) {
             turn.setCurrentPlayer(c1);
-        else
+            turn.setInactivePlayer(c2);
+        }
+        else {
             turn.setCurrentPlayer(c2);
+            turn.setInactivePlayer(c1);
+        }
 
         this.hasStarted = false;
         this.emptyBoard = true;
@@ -55,6 +59,25 @@ public class Controller {
         this.hasStarted = b;
     }
 
+    public character getPlayer(int id){
+        if(id == 1)
+            return c1;
+        else if (id == 2)
+            return c2;
+        else
+            System.err.println("Invalid ID");
+
+        return null;
+    }
+
+    public character getCurrentPlayer(){
+        return this.turn.getCurrentPlayer();
+    }
+
+    public character getInactivePlayer(){
+        return this.turn.getInactivePlayer();
+    }
+
     //Transformer(mutative): Changes player position on the board
     //Postcondition: Player position changed
     //@param c is the character who will have his position changed
@@ -69,6 +92,7 @@ public class Controller {
     //Transformer(mutative): Changes who the current player is
     //Postcondition: Current player is changed
     public void changeCurrentPlayer(){
+        turn.setInactivePlayer(turn.getCurrentPlayer());
         turn.setCurrentPlayer((turn.getCurrentPlayer().getId() == 1 ? c2 : c1));
     }
 

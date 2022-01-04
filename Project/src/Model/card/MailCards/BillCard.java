@@ -1,5 +1,6 @@
 package Model.card.MailCards;
 
+import Controller.Controller;
 import Model.Player.character;
 
 //Class BillCard implements the bill card
@@ -13,7 +14,7 @@ public class BillCard extends MailCard{
     //Transformer(mutative): The character pays the euro value
     //Postcondition: Character paid the value
     //@param c is the current player
-    public void action(character c){
-
+    public void action(Controller g){
+        g.getCurrentPlayer().addCard(this);
     }
 }
