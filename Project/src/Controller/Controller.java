@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Controller {
     private boolean hasStarted, emptyBoard;
     private final character c1, c2;
-    private Board board;
+    public Board board;
     private Turn turn = new Turn();
 
     //Constructor: Constructs a game controller

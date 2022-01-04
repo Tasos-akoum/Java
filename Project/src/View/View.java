@@ -10,7 +10,7 @@ import java.net.URL;
 
 public class View extends JFrame {
 
-    private final int width = 1600;
+    private final int width = 1750;
     private final int height = 900;
 
 
@@ -24,7 +24,9 @@ public class View extends JFrame {
     private JDesktopPane player2Field;
     private JDesktopPane infoBox;
 
-    private JLabel[] tiles;
+    private JLabel[][] tiles;
+    private JLabel[][] days;
+    private JLabel bg;
     private JLabel player1, player2;
     private JLabel money1, money2;
     private JLabel loan1, loan2;
@@ -45,7 +47,9 @@ public class View extends JFrame {
         player1Field = new JDesktopPane();
         player2Field = new JDesktopPane();
         infoBox = new JDesktopPane();
-        tiles = new JLabel[32];
+        tiles = new JLabel[5][7];
+        days = new JLabel[5][7];
+        bg = new JLabel();
         player1 = new JLabel("Player1");
         player2 = new JLabel("Player2");
         money1 = new JLabel("Money: " + game.getPlayer(1).getMoney());
@@ -90,7 +94,7 @@ public class View extends JFrame {
     private void init_tiles(){
 //        for()
         int tiles_width = (width - 265) / 7;
-        int tiles_height = 225;
+        int tiles_height = 108;
 //        tiles[0] = new JLabel();
 //        this.getImage("Resources/basic/mc1.png", tiles_width, tiles_height);
 //        tiles[0].setIcon(new ImageIcon(image));
@@ -102,13 +106,57 @@ public class View extends JFrame {
 //        tiles[10].setBounds(0, 190 + tiles_height, tiles_width,tiles_height);
 //        basic_panel.add(tiles[10]);
 
-        for(int j = 0; j < 3; j++) {
-            for (int i = 0; i < 7; i++) {
-                tiles[i] = new JLabel();
-                this.getImage("Resources/basic/mc1.png", tiles_width, tiles_height);
-                tiles[i].setIcon(new ImageIcon(image));
-                tiles[i].setBounds(180 * i, 190 +(j * tiles_height), tiles_width, tiles_height);
-                basic_panel.add(tiles[i]);
+        int tileDistance = 0;
+
+        for(int i = 0; i < 5; i++) {
+            if(i != 4) {
+                for (int j = 0; j < 7; j++) {
+                    tiles[i][j] = new JLabel();
+                    this.getImage("Resources/basic/mc1.png", tiles_width, tiles_height);
+                    tiles[i][j].setIcon(new ImageIcon(image));
+                    tiles[i][j].setBounds(190 * j, 225 + (i * tiles_height) + (tileDistance * i), tiles_width, tiles_height);
+                    basic_panel.add(tiles[i][j], JLayeredPane.PALETTE_LAYER);
+                }
+                tileDistance = 25;
+
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    tiles[i][j] = new JLabel();
+                    this.getImage("Resources/basic/mc1.png", tiles_width, tiles_height);
+                    tiles[i][j].setIcon(new ImageIcon(image));
+                    tiles[i][j].setBounds(180 * j, 225 + (i * tiles_height) + (tileDistance * i), tiles_width, tiles_height);
+                    basic_panel.add(tiles[i][j], JLayeredPane.PALETTE_LAYER);
+                }
+            }
+        }
+
+        int tile_index = 0; //Is the index for the tile array in the class Board
+        tileDistance = 0;
+
+        for(int i = 0; i < 5; i++){
+            int dayLabel_distance = 0;
+            if(i != 4) {
+                for (int j = 0; j < 7; j++) {
+                    days[i][j] = new JLabel(game.board.getTile(tile_index).getDay(), SwingConstants.CENTER);
+                    days[i][j].setBounds(180 * j + (dayLabel_distance * j), 200 +(i * tiles_height) + (tileDistance * i), tiles_width, 25);
+                    days[i][j].setOpaque(true);
+                    days[i][j].setBackground(Color.orange);
+                    basic_panel.add(days[i][j], JLayeredPane.PALETTE_LAYER);
+
+                    tile_index++;
+                    dayLabel_distance = 10;
+                }
+                 tileDistance = 25;
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    days[i][j] = new JLabel(game.board.getTile(tile_index).getDay(), SwingConstants.CENTER);
+                    days[i][j].setBounds(180 * j + (dayLabel_distance * j), 200 +(i * tiles_height) + (tileDistance * i), tiles_width, 25);
+                    days[i][j].setOpaque(true);
+                    days[i][j].setBackground(Color.orange);
+                    basic_panel.add(days[i][j], JLayeredPane.PALETTE_LAYER);
+
+                    tile_index++;
+                }
             }
         }
 
@@ -149,8 +197,13 @@ public class View extends JFrame {
 //        image = image.getScaledInstance(width - 271,200, Image.SCALE_SMOOTH);
         getImage("Resources/basic/logo.png", width-330,200);
         logo.setIcon(new ImageIcon(image));
-        logo.setBounds(0,0,width - 330,200);
+        logo.setBounds(0,0,width - 398,200);
         basic_panel.add(logo);
+
+        getImage("Resources/basic/bg_green.png", width, height);
+        bg.setIcon((new ImageIcon(image)));
+        bg.setBounds(0, 0, width, height);
+        basic_panel.add(bg, JLayeredPane.DEFAULT_LAYER);
 
 //        basic_panel.add(player1);
 //        basic_panel.add(money1);
@@ -175,7 +228,7 @@ public class View extends JFrame {
 
         PlayerInfoPane infoPane = new PlayerInfoPane();
         infoPane.setBounds(width - 270, 15,250,190);
-        basic_panel.add(infoPane);
+        basic_panel.add(infoPane, JLayeredPane.PALETTE_LAYER);
     }
 
     public class ImagePane extends JDesktopPane{
