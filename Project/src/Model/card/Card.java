@@ -1,12 +1,18 @@
 package Model.card;
 
 import Controller.Controller;
-import Model.Player.character;
+
+import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
 
 //Abstract class Card is the class that gives basic functionality to all the card instances.
 //It has an abstract method "action", because all cards need to have a different action which affects the current player.
 public abstract class Card {
     private final String type;
+    private Image image;
+    private String message;
+    private String choice;
 
     //Constructor: Constructs a new card with a type
     //Postcondition: A card has been constructed with a type
@@ -31,4 +37,32 @@ public abstract class Card {
     public boolean canBeSold(){
         return type.equals("Deal");
     }
+
+    public String getMessage(){
+        return this.message;
+    }
+
+    public String getButtonText(){
+        return this.choice;
+    }
+
+    public Image getImage(){
+        return this.image;
+    }
+
+    public void setMessage(String message){
+        this.message = message;
+    }
+
+    public void setChoice(String choice){
+        this.choice = choice;
+    }
+
+    public void setImage(String path){
+        ClassLoader cldr = this.getClass().getClassLoader();
+        URL imageURL = cldr.getResource(path);
+        this.image = new ImageIcon(imageURL).getImage();
+        this.image = image.getScaledInstance(250,150,Image.SCALE_SMOOTH);
+    }
+
 }

@@ -4,6 +4,11 @@ import Controller.Controller;
 import Model.card.Card;
 import Model.Player.character;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 //Abstract class MailCard implements the basic functionality of mail cards
 public abstract class MailCard extends Card {
     private int euro;
@@ -13,6 +18,32 @@ public abstract class MailCard extends Card {
     public MailCard(String type, int euro){
         super(type);
         this.euro = euro;
+    }
+
+    public void showCard(){
+        JFrame frame = new JFrame(this.getType());
+        frame.setSize(600,250);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 10, 10);
+        frame.setLayout(layout);
+        frame.setResizable(false);
+
+        JLabel image = new JLabel();
+        image.setIcon(new ImageIcon(this.getImage()));
+        JLabel message = new JLabel(this.getMessage());
+        JButton button = new JButton(this.getButtonText());
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+
+        frame.add(image);
+        frame.add(message);
+        frame.add(button);
+        frame.setVisible(true);
     }
 
     //Transformer(mutative): Does some action

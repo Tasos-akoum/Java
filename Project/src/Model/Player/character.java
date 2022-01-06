@@ -11,7 +11,8 @@ public class character implements PlayerInterface{
     private int money;
     private int loan;
     private int bills;
-    private int position;
+    private int position_x;
+    private int position_y;
     private final Dice dice;
     private boolean roll;
     private boolean move;
@@ -26,7 +27,8 @@ public class character implements PlayerInterface{
         this.money = 0;
         this.loan = 0;
         this.bills = 0;
-        this.position = 0;
+        this.position_x = 0;
+        this.position_y = 0;
         this.dice = new Dice();
         this.roll = true;
         this.move = true;
@@ -152,10 +154,16 @@ public class character implements PlayerInterface{
         return this.bills;
     }
 
-    //Accessor(selector): Returns the position of the character
-    //Postcondition: Returned the position of the character
-    public int getPosition(){
-        return this.position;
+    //Accessor(selector): Returns the x position of the character
+    //Postcondition: Returned the x position of the character
+    public int getPositionX(){
+        return this.position_x;
+    }
+
+    //Accessor(selector): Returns the y position of the character
+    //Postcondition: Returned the y position of the character
+    public int getPositionY(){
+        return this.position_y;
     }
 
     //Accessor(selector): Returns the score of the character
@@ -203,8 +211,9 @@ public class character implements PlayerInterface{
     //Transformer(mutative): Sets the position of the character
     //Postcondition: The position value is changed to position
     //@param position is the new position of the character
-    public void setPosition(int position){
-        this.position = position;
+    public void setPosition(int x, int y){
+        this.position_x = x;
+        this.position_y = y;
     }
 
     //Transformer(mutative): Sets the endTurn value of the character

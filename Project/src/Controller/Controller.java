@@ -21,8 +21,8 @@ public class Controller {
         c1 = new character(1);
         c2 = new character(2);
 
-        c1.setPosition(1);
-        c2.setPosition(1);
+        c1.setPosition(0, 0);
+        c2.setPosition(0, 0);
 
         c1.setMoney(3500);
         c2.setMoney(3500);
@@ -82,10 +82,39 @@ public class Controller {
     //Postcondition: Player position changed
     //@param c is the character who will have his position changed
     public void changePlayerPosition(character c){
-        if(c.canMove()) {
-            c.setPosition(c.getPosition() + c.getDice().getValue());
-            if (c.getPosition() > 31)
-                c.setPosition(1);
+        if(c.canMove()){
+            if(c.getPositionY() + c.getDice().getValue() > 6){
+                if(c.getPositionX() + 1 == 5){
+                    c.setPosition(4,3);
+                } else {
+                    c.setPosition(c.getPositionX() + 1, c.getPositionY() + c.getDice().getValue() - 7);
+                }
+            } else {
+                c.setPosition(c.getPositionX(), c.getPositionY() + c.getDice().getValue());
+            }
+
+            c.setMove(false);
+        }
+    }
+
+    public void rollDice(character c){
+        if(c.canRoll()){
+            c.rollDice();
+            changePlayerPosition(c);
+            c.setRoll(false);
+            board.getTile(c.getPositionX(), c.getPositionY()).action(this);
+        }
+    }
+
+    public void endTurn(character c){
+        if(c.canEndTurn()){
+            changeCurrentPlayer();
+            this.getCurrentPlayer().setMove(true);
+            this.getCurrentPlayer().setRoll(true);
+
+            this.getInactivePlayer().setRoll(false);
+            this.getInactivePlayer().setMove(false);
+            this.getInactivePlayer().setEndTurn(false);
         }
     }
 

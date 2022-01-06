@@ -12,7 +12,8 @@ interface PlayerInterface{
     int getMoney();
     int getLoan();
     int getBills();
-    int getPosition();
+    int getPositionX();
+    int getPositionY();
     int getScore();
 
     boolean canRoll();
@@ -35,7 +36,7 @@ interface PlayerInterface{
     void setBills(int bills);
     void setMove(boolean move);
     void setRoll(boolean b);
-    void setPosition(int position);
+    void setPosition(int x, int y);
     void setEndTurn(boolean b);
     void Played();
 
