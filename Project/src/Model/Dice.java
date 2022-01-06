@@ -9,7 +9,7 @@ public class Dice {
     //Constructor: Constructs a new Dice with a value of 0
     //Postcondition: A new dice has been constructed
     public Dice(){
-        value = 0;
+        value = 1;
     }
 
     //Transformer(mutative): rolls dice

@@ -21,7 +21,7 @@ public class View extends JFrame {
     private URL imageURL;
     private ClassLoader cldr;
 
-    private ImagePane basic_panel;
+    private JLayeredPane basic_panel;
     private JDesktopPane player1Field;
     private JDesktopPane player2Field;
     private JDesktopPane infoBox;
@@ -31,10 +31,9 @@ public class View extends JFrame {
     private JLabel bg;
     private JLabel player1, player2;
     private JLabel player1_pawn, player2_pawn;
-    private JLabel money1, money2;
-    private JLabel loan1, loan2;
-    private JLabel bills1, bills2;
+    private JLabel player1info, player2info;
     private JLabel logo;
+    private JLabel dice1, dice2;
 
     private JButton rollDiceButton1, rollDiceButton2;
     private JButton getLoanButton1, getLoanButton2;
@@ -46,7 +45,7 @@ public class View extends JFrame {
         game = new Controller();
         cldr = this.getClass().getClassLoader();
 
-        basic_panel = new ImagePane();
+        basic_panel = new JLayeredPane();
         player1Field = new JDesktopPane();
         player2Field = new JDesktopPane();
         infoBox = new JDesktopPane();
@@ -57,13 +56,13 @@ public class View extends JFrame {
         player1_pawn = new JLabel();
         player2 = new JLabel("Player2");
         player2_pawn = new JLabel();
-        money1 = new JLabel("Money: " + game.getPlayer(1).getMoney());
-        money2 = new JLabel("Money: " + game.getPlayer(2).getMoney());
-        loan1 = new JLabel("Loan: " + game.getPlayer(1).getLoan());
-        loan2 = new JLabel("Loan: " + game.getPlayer(2).getLoan());
-        bills1 = new JLabel("Bills: " + game.getPlayer(1).getBills());
-        bills2 = new JLabel("Bills: " + game.getPlayer(2).getBills());
+        player1info = new JLabel("<html>Money: " + game.getPlayer(1).getMoney() + "<br>Loan: " + game.getPlayer(1).getLoan()
+                                  + "<br>Bills: " + game.getPlayer(1).getBills() +"</html>");
+        player2info = new JLabel("<html>Money: " + game.getPlayer(2).getMoney() + "<br>Loan: " + game.getPlayer(2).getLoan()
+                + "<br>Bills: " + game.getPlayer(2).getBills() +"</html>");
         logo = new JLabel();
+        dice1 = new JLabel();
+        dice2 = new JLabel();
         rollDiceButton1 = new JButton("Roll Dice");
         rollDiceButton2 = new JButton("Roll Dice");
         getLoanButton1 = new JButton("Get Loan");
@@ -80,6 +79,7 @@ public class View extends JFrame {
 
         this.setSize(width,height);
         this.setResizable(false);
+        this.setLocationRelativeTo(null);
         this.setTitle("Test");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         basic_panel.setVisible(true);
@@ -217,82 +217,153 @@ public class View extends JFrame {
             }
         }
 
-        this.updatePlayerPosition();
 
+
+        this.updatePlayerPosition();
     }
 
     private void updatePlayerPosition(){
         character c1 = game.getPlayer(1);
         character c2 = game.getPlayer(2);
 
-        player1_pawn.setBounds(tiles[c1.getPositionX()][c1.getPositionY()].getBounds().x + 50, tiles[c1.getPositionX()][c1.getPositionY()].getBounds().y + 5, 100, 100);
-        player2_pawn.setBounds(tiles[c2.getPositionX()][c2.getPositionY()].getBounds().x + 50, tiles[c2.getPositionX()][c2.getPositionY()].getBounds().y + 40, 50, 100);
+        if(c1.getPositionY() == c2.getPositionY() && c1.getPositionX() == c2.getPositionX()) {
+            player1_pawn.setBounds(tiles[c1.getPositionX()][c1.getPositionY()].getBounds().x + 20, tiles[c1.getPositionX()][c1.getPositionY()].getBounds().y + 5, 100, 100);
+            player2_pawn.setBounds(tiles[c2.getPositionX()][c2.getPositionY()].getBounds().x + 80, tiles[c2.getPositionX()][c2.getPositionY()].getBounds().y + 5, 100, 100);
+        } else {
+            player1_pawn.setBounds(tiles[c1.getPositionX()][c1.getPositionY()].getBounds().x + 50, tiles[c1.getPositionX()][c1.getPositionY()].getBounds().y + 5, 100, 100);
+            player2_pawn.setBounds(tiles[c2.getPositionX()][c2.getPositionY()].getBounds().x + 50, tiles[c2.getPositionX()][c2.getPositionY()].getBounds().y + 5, 100, 100);
+        }
+    }
+
+    private void updatePlayerInfo(){
+        player1info.setText("<html>Money: " + game.getPlayer(1).getMoney() + "<br>Loan: " + game.getPlayer(1).getLoan()
+                                  + "<br>Bills: " + game.getPlayer(1).getBills() +"</html>");
+        player2info.setText("<html>Money: " + game.getPlayer(2).getMoney() + "<br>Loan: " + game.getPlayer(2).getLoan()
+                + "<br>Bills: " + game.getPlayer(2).getBills() +"</html>");
+    }
+
+    private void updateDiceImage(){
+        getImage("Resources/basic/dice-" + game.getPlayer(1).getDice().getValue() + ".jpg", 80, 40);
+        dice1.setIcon(new ImageIcon(image));
+
+        getImage("Resources/basic/dice-" + game.getPlayer(2).getDice().getValue() + ".jpg", 80, 40);
+        dice2.setIcon(new ImageIcon(image));
     }
 
     private void initComponents(){
+        //Initialize the logo
         getImage("Resources/basic/logo.png", width-420,200);
         logo.setIcon(new ImageIcon(image));
         logo.setBounds(0,0,width - 420,200);
         basic_panel.add(logo);
 
+        //Initialize background image
         getImage("Resources/basic/bg_green.png", width, height);
         bg.setIcon((new ImageIcon(image)));
         bg.setBounds(0, 0, width, height);
         basic_panel.add(bg, JLayeredPane.DEFAULT_LAYER);
 
+        //Initialize player pawns on the panel
         getImage("Resources/basic/pawn_blue.png", 100, 100);
         player1_pawn.setIcon(new ImageIcon(image));
-        player1_pawn.setBounds(50,230,100,100);
-        game.getPlayer(1).setPosition(1,1);
-        getImage("Resources/basic/pawn_yellow.png", 50, 100);
+        basic_panel.add(player1_pawn, JLayeredPane.MODAL_LAYER);
+
+        getImage("Resources/basic/pawn_yellow.png", 100, 100);
         player2_pawn.setIcon(new ImageIcon(image));
+        basic_panel.add(player2_pawn, JLayeredPane.MODAL_LAYER);
 
-        basic_panel.add(player1_pawn, JLayeredPane.PALETTE_LAYER);
+        init_playerFields();
 
-        PlayerInfoPane infoPane = new PlayerInfoPane();
-        infoPane.setBounds(width - 270, 15,250,190);
-        basic_panel.add(infoPane, JLayeredPane.PALETTE_LAYER);
     }
 
-    public class ImagePane extends JDesktopPane{
-        Image image = null;
+    private void init_playerFields(){
+        player1Field.setBounds(width - 395, 10, 380, 190);
+        player1Field.setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.blue));
+        GridBagLayout layout = new GridBagLayout();
+        GridBagConstraints gbc = new GridBagConstraints();
+        player1Field.setLayout(layout);
 
-        public ImagePane(){
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        player1Field.add(player1, gbc);
 
-        }
+        gbc.gridy = 1;
+        gbc.insets = new Insets(0,0,10,0);
+        player1Field.add(player1info, gbc);
 
-        @Override
-        public void paintComponents(Graphics g) {
-            super.paintComponents(g);
-            g.drawImage(image, 0,0,this);
-        }
+        gbc.insets = new Insets(0,0,0,0);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridy = 2;
+        gbc.weighty = 0;
+        player1Field.add(rollDiceButton1, gbc);
+
+        getImage("Resources/basic/dice-5.jpg", 80,40);
+        dice1.setIcon(new ImageIcon(image));
+        dice1.setBounds(width - 150, 120, 80, 40);
+        basic_panel.add(dice1, JLayeredPane.MODAL_LAYER);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        player1Field.add(getLoanButton1, gbc);
+
+        gbc.gridy = 4;
+        gbc.gridx = 0;
+        player1Field.add(showCards1, gbc);
+        gbc.gridx = 1;
+        player1Field.add(endTurn1, gbc);
+
+        basic_panel.add(player1Field, JLayeredPane.PALETTE_LAYER);
+
+
+        player2Field.setBounds(width - 395, height - 250, 380, 190);
+        player2Field.setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.yellow));
+        player2Field.setLayout(layout);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        player2Field.add(player2, gbc);
+
+        gbc.gridy = 1;
+        gbc.insets = new Insets(0,0,10,0);
+        player2Field.add(player2info, gbc);
+
+        gbc.insets = new Insets(0,0,0,0);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridy = 2;
+        gbc.weighty = 0;
+        player2Field.add(rollDiceButton2, gbc);
+
+        getImage("Resources/basic/dice-5.jpg", 80,40);
+        dice2.setIcon(new ImageIcon(image));
+        dice2.setBounds(width - 150, height - 140, 80, 40);
+        basic_panel.add(dice2, JLayeredPane.MODAL_LAYER);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        player2Field.add(getLoanButton2, gbc);
+
+        gbc.gridy = 4;
+        gbc.gridx = 0;
+        player2Field.add(showCards2, gbc);
+        gbc.gridx = 1;
+        player2Field.add(endTurn2, gbc);
+
+        basic_panel.add(player2Field, JLayeredPane.PALETTE_LAYER);
     }
 
-    public class PlayerInfoPane extends JPanel{
-        public PlayerInfoPane() {
-            this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.blue));
-            this.setLayout(new GridBagLayout());
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.gridwidth = GridBagConstraints.REMAINDER;
-            gbc.weightx = 1;
-            gbc.anchor = GridBagConstraints.LINE_START;
-            gbc.insets = new Insets(2, 2, 22, 2);
-
-            this.add(player1, gbc);
-            gbc.insets = new Insets(2,2,2,2);
-            this.add(money1, gbc);
-            this.add(loan1, gbc);
-            gbc.weighty = 1;
-            gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-            this.add(bills1, gbc);
-            this.add(showCards1,gbc);
-            this.add(rollDiceButton1, gbc);
-            this.add(getLoanButton1, gbc);
-            this.add(endTurn1, gbc);
-        }
-    }
 
     public static void main(String[] args) {
         View view = new View();
+
+        view.game.getPlayer(1).setLoan(2);
+        view.game.getPlayer(1).rollDice();
+        view.updateDiceImage();
+        view.updatePlayerInfo();
     }
 }
