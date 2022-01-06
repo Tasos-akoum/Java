@@ -10,9 +10,9 @@ import java.net.URL;
 //It has an abstract method "action", because all cards need to have a different action which affects the current player.
 public abstract class Card {
     private final String type;
-    private Image image;
     private String message;
-    private String choice;
+    private Image image;
+
 
     //Constructor: Constructs a new card with a type
     //Postcondition: A card has been constructed with a type
@@ -42,9 +42,7 @@ public abstract class Card {
         return this.message;
     }
 
-    public String getButtonText(){
-        return this.choice;
-    }
+
 
     public Image getImage(){
         return this.image;
@@ -54,9 +52,7 @@ public abstract class Card {
         this.message = message;
     }
 
-    public void setChoice(String choice){
-        this.choice = choice;
-    }
+
 
     public void setImage(String path){
         ClassLoader cldr = this.getClass().getClassLoader();

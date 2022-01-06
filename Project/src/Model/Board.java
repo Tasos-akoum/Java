@@ -84,16 +84,17 @@ public class Board {
 
         if(this.isEmpty){
             for(int i = 0; i < 5; i++) {
-                for (int j = 1; j < 7; j++) {
+                for (int j = 0; j < 7; j++) {
                     index = (i * 7) + j;
 
-                    if(tiles[i][j] != null)
+                    if(tiles[i][j] != null && !(tiles[i][j] instanceof StartTile)) {
                         tiles[i][j].setDay(days[day_index] + " " + index);
 
-                    if (day_index == 6) {
-                        day_index = 0;
-                    } else {
-                        day_index++;
+                        if (day_index == 6) {
+                            day_index = 0;
+                        } else {
+                            day_index++;
+                        }
                     }
                 }
             }
@@ -104,13 +105,14 @@ public class Board {
                 for (int j = 1; j < 7; j++) {
                     index = (i * 7) + j;
 
-                    if(tiles[i][j] != null)
+                    if(tiles[i][j] != null && !(tiles[i][j] instanceof StartTile)) {
                         tiles[i][j].setDay(days[day_index] + " " + index);
 
-                    if (day_index == 6) {
-                        day_index = 0;
-                    } else {
-                        day_index++;
+                        if (day_index == 6) {
+                            day_index = 0;
+                        } else {
+                            day_index++;
+                        }
                     }
                 }
             }
@@ -189,10 +191,33 @@ public class Board {
         } catch (Exception e){
             System.err.println(e.getMessage());
         }
+
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(cldr.getResource("Resources/cardText/dealCards.csv").getFile()));
+
+            while((line = br.readLine()) != null){
+                String[] info = line.split(splitBy);
+                String type = info[1];
+                String message = info[2];
+                String cost = info[3];
+                String value = info[4];
+                String image = info[5];
+
+                dealCards.add(new DealCard(Integer.parseInt(cost), Integer.parseInt(value)));
+                dealCards.get(dealCards.size() - 1).setMessage(message);
+                dealCards.get(dealCards.size() - 1).setImage("Resources/cards/" + image);
+            }
+        } catch (Exception e){
+            System.err.println(e.getMessage());
+        }
     }
 
     public ArrayList<MailCard> getMailCards(){
         return this.mailCards;
+    }
+
+    public ArrayList<DealCard> getDealCards(){
+        return this.dealCards;
     }
 
     //Accessor(selector): Returns the tile in the i position of the board
@@ -213,7 +238,6 @@ public class Board {
     public static void main(String[] args) {
         Board board = new Board();
 
-        board.getMailCards().get(45).showCard();
-        System.out.println(4);
+        board.getDealCards().get(10).showCard();
     }
 }

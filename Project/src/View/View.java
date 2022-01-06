@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Controller;
+import Model.Player.character;
 import Model.Tile.*;
 
 import javax.swing.*;
@@ -29,6 +30,7 @@ public class View extends JFrame {
     private JLabel[][] days;
     private JLabel bg;
     private JLabel player1, player2;
+    private JLabel player1_pawn, player2_pawn;
     private JLabel money1, money2;
     private JLabel loan1, loan2;
     private JLabel bills1, bills2;
@@ -52,7 +54,9 @@ public class View extends JFrame {
         days = new JLabel[5][7];
         bg = new JLabel();
         player1 = new JLabel("Player1");
+        player1_pawn = new JLabel();
         player2 = new JLabel("Player2");
+        player2_pawn = new JLabel();
         money1 = new JLabel("Money: " + game.getPlayer(1).getMoney());
         money2 = new JLabel("Money: " + game.getPlayer(2).getMoney());
         loan1 = new JLabel("Loan: " + game.getPlayer(1).getLoan());
@@ -213,41 +217,19 @@ public class View extends JFrame {
             }
         }
 
+        this.updatePlayerPosition();
 
+    }
 
-//        basic_panel.add(tiles[0]);
+    private void updatePlayerPosition(){
+        character c1 = game.getPlayer(1);
+        character c2 = game.getPlayer(2);
+
+        player1_pawn.setBounds(tiles[c1.getPositionX()][c1.getPositionY()].getBounds().x + 50, tiles[c1.getPositionX()][c1.getPositionY()].getBounds().y + 5, 100, 100);
+        player2_pawn.setBounds(tiles[c2.getPositionX()][c2.getPositionY()].getBounds().x + 50, tiles[c2.getPositionX()][c2.getPositionY()].getBounds().y + 40, 50, 100);
     }
 
     private void initComponents(){
-        basic_panel.setBackground(new Color(49, 161, 36));
-
-        player1.setBounds(width - 265, 15, 100, 20);
-        money1.setBounds(width - 265, 50, 100, 20);
-        loan1.setBounds(width - 265, 70, 100, 20);
-        bills1.setBounds(width - 265, 90, 100, 20);
-        rollDiceButton1.setBounds(width - 265, 120, 100, 20);
-        getLoanButton1.setBounds(width - 265, 145, 100, 20);
-        endTurn1.setBounds(width - 265, 170, 100,20);
-        showCards1.setBounds(width - 175, 15,133,20);
-
-        player1Field.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.blue));
-        player1Field.setBounds(width - 270,10,250,190);
-
-        player2.setBounds(width - 265, height - 245, 100, 20);
-        money2.setBounds(width - 265, height - 210, 100, 20);
-        loan2.setBounds(width - 265, height - 190, 100, 20);
-        bills2.setBounds(width - 265, height - 170, 100, 20);
-        rollDiceButton2.setBounds(width - 265, height - 140, 100, 20);
-        getLoanButton2.setBounds(width - 265, height - 115, 100, 20);
-        endTurn2.setBounds(width - 265, height - 90, 100,20);
-        showCards2.setBounds(width - 175, height - 245,133,20);
-
-        player2Field.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.yellow));
-        player2Field.setBounds(width - 270,height - 250,250,190);
-
-//        imageURL = cldr.getResource("Resources/basic/logo.png");
-//        Image image = new ImageIcon(imageURL).getImage();
-//        image = image.getScaledInstance(width - 271,200, Image.SCALE_SMOOTH);
         getImage("Resources/basic/logo.png", width-420,200);
         logo.setIcon(new ImageIcon(image));
         logo.setBounds(0,0,width - 420,200);
@@ -258,26 +240,14 @@ public class View extends JFrame {
         bg.setBounds(0, 0, width, height);
         basic_panel.add(bg, JLayeredPane.DEFAULT_LAYER);
 
-//        basic_panel.add(player1);
-//        basic_panel.add(money1);
-//        basic_panel.add(loan1);
-//        basic_panel.add(bills1);
-//        basic_panel.add(rollDiceButton1);
-//        basic_panel.add(getLoanButton1);
-//        basic_panel.add(endTurn1);
-//        basic_panel.add(showCards1);
-//
-//        basic_panel.add(player2);
-//        basic_panel.add(money2);
-//        basic_panel.add(loan2);
-//        basic_panel.add(bills2);
-//        basic_panel.add(rollDiceButton2);
-//        basic_panel.add(getLoanButton2);
-//        basic_panel.add(endTurn2);
-//        basic_panel.add(showCards2);
-//
-//        basic_panel.add(player1Field, JLayeredPane.DEFAULT_LAYER);
-//        basic_panel.add(player2Field, JLayeredPane.DEFAULT_LAYER);
+        getImage("Resources/basic/pawn_blue.png", 100, 100);
+        player1_pawn.setIcon(new ImageIcon(image));
+        player1_pawn.setBounds(50,230,100,100);
+        game.getPlayer(1).setPosition(1,1);
+        getImage("Resources/basic/pawn_yellow.png", 50, 100);
+        player2_pawn.setIcon(new ImageIcon(image));
+
+        basic_panel.add(player1_pawn, JLayeredPane.PALETTE_LAYER);
 
         PlayerInfoPane infoPane = new PlayerInfoPane();
         infoPane.setBounds(width - 270, 15,250,190);

@@ -3,6 +3,11 @@ package Model.card;
 import Controller.Controller;
 import Model.Player.character;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 //Class DealCard is the class responsible for creating Deal cards and their logic.
 //They have a cost, a value and a choice, whether to get the deal or to ignore it
 public class DealCard extends Card{
@@ -15,6 +20,66 @@ public class DealCard extends Card{
         super("Deal");
         this.cost = cost;
         this.value = value;
+    }
+
+    public void showCard(){
+        JFrame frame = new JFrame(this.getType());
+        frame.setSize(600,250);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+
+        GridBagLayout layout = new GridBagLayout();
+        GridBagConstraints gbc = new GridBagConstraints();
+        frame.setLayout(layout);
+        frame.setResizable(false);
+
+        JLabel image = new JLabel();
+        image.setIcon(new ImageIcon(this.getImage()));
+        JLabel message = new JLabel("<html>" + this.getMessage() + "<br>Τιμή αγοράς: " + this.cost + "<br>Τιμή πώλησης: " + this.value + "</html>");
+        JLabel cost_label = new JLabel("Τιμή αγοράς: " + this.cost);
+        JLabel value_label = new JLabel("Τιμή πώλησης: " + this.value);
+
+        JButton choice1 = new JButton("Αγόρασε");
+        choice1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+
+        JButton choice2 = new JButton("Αγνόησε την συμφωνια");
+        choice2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+
+        gbc.weighty = 0;
+        gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 10, 10, 0);
+        frame.add(image,gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 1;
+        gbc.insets = new Insets(0, 25, 0, 0);
+        frame.add(message,gbc);
+
+
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 0;
+        frame.add(choice1,gbc);
+
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0, 10, 0, 0);
+        frame.add(choice2,gbc);
+
+        frame.setVisible(true);
     }
 
     //Transformer(mutative):Decides if the player is going to accept the deal and follows through with what needs to happen
