@@ -28,5 +28,8 @@ public class RadioContestTile extends Tile{
             inactivePlayer.addMoney(1000);
         else
             this.action(g);
+
     }
+
+
 }

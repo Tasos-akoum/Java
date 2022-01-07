@@ -16,7 +16,7 @@ public class BuyerTile extends Tile{
     //Postcondition: Selected card sold
     //@param c is the current player
     public void action(Controller g){
-
+//        if(g.getCurrentPlayer().getC)
     }
 
 }

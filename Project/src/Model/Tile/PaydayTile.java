@@ -16,6 +16,6 @@ public class PaydayTile extends Tile{
     //and completes all the actions that are necessary
     //Postcondition: Actions complete
     public void action(Controller g){
-
+        
     }
 }

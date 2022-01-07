@@ -2,6 +2,7 @@ package Model.card.MailCards;
 
 import Controller.Controller;
 import Model.Player.character;
+import Model.Tile.BuyerTile;
 
 //Class MoveToDealBuyer implements the move to deal buyer card
 public class MoveToDealBuyer extends MailCard{
@@ -15,6 +16,15 @@ public class MoveToDealBuyer extends MailCard{
     //Postcondition: Moved character to the next buyer or deal tile
     //@param c is the character
     public void action(Controller g){
+        character c = g.getCurrentPlayer();
 
+        for(int i = c.getPositionX(); i < 5; i++){
+            for(int j = c.getPositionY(); j < 7; j++){
+                if(g.board.getTile(i,j) instanceof BuyerTile){
+                    c.setPosition(i,j);
+                    g.board.getTile(i,j).action(g);
+                }
+            }
+        }
     }
 }

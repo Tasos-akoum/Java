@@ -1,13 +1,17 @@
 package Model.Player;
 
+import Controller.Controller;
 import Model.card.Card;
 import Model.Dice;
+
+import java.util.ArrayList;
 
 //Interface for the character class
 interface PlayerInterface{
     void seeCards();
 
     Dice getDice();
+    void rollDice();
     int getId();
     int getMoney();
     int getLoan();
@@ -25,10 +29,9 @@ interface PlayerInterface{
     int calculateLoan(int amount);
     void replenishMoney();
 
-    void drawCard(Card card);
-    void rollDice();
+    ArrayList<Card> getCards();
+    void drawCard(Card card, Controller g);
     void sellCard(Card card);
-    void buyCard(Card card);
     void addCard(Card card);
 
     void setMoney(int money);

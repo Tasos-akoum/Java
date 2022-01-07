@@ -22,7 +22,7 @@ public class DealCard extends Card{
         this.value = value;
     }
 
-    public void showCard(){
+    public void showCard(Controller g){
         JFrame frame = new JFrame(this.getType());
         frame.setSize(600,250);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,6 +43,7 @@ public class DealCard extends Card{
         choice1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                action(g);
                 frame.dispose();
             }
         });

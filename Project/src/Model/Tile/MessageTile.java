@@ -1,7 +1,9 @@
 package Model.Tile;
 
 import Controller.Controller;
+import Model.Board;
 import Model.Player.character;
+import Model.card.MailCards.MoveToDealBuyer;
 
 //Class MessageTile implements the message tile
 public class MessageTile extends Tile{
@@ -25,6 +27,29 @@ public class MessageTile extends Tile{
     //Transformer(mutative):Makes the player draw 1 or 2 mail cards and complete their actions
     //Postcondition: Cards drawn and actions completed
     public void action(Controller g) {
+        character c = g.getCurrentPlayer();
+        Board board = g.board;
 
+        for(int i = 0; i < this.value; i++){
+            boolean ok = false;
+            while(!ok){
+                if(board.getMailCards().get(board.getMailCards().size() - 1) instanceof MoveToDealBuyer){
+                    board.getMailCards().remove(board.getMailCards().size() - 1);
+                } else {
+                    g.getCurrentPlayer().drawCard(board.getMailCards().get(board.getMailCards().size() - 1), g);
+                    board.getMailCards().remove(board.getMailCards().size() - 1);
+                    ok = true;
+                }
+
+                if(board.getMailCards().size() == 0)
+                    board.replenishMailCards();
+            }
+        }
+
+    }
+
+    public static void main(String[] args) {
+        MessageTile tile = new MessageTile(2);
+        tile.action(new Controller());
     }
 }

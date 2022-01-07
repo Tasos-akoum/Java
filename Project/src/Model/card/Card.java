@@ -20,6 +20,8 @@ public abstract class Card {
         this.type = type;
     }
 
+    public abstract void showCard(Controller g);
+
     //Transformer(mutative): Does some action
     //Postcondition: action complete
     //@param c is the current character

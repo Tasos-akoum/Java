@@ -6,29 +6,29 @@ import Model.Player.character;
 //Class Turn keeps tracks of who needs to play and how many turns the game will last
 public class Turn {
     private character currentPlayer, inactivePlayer;
-    private int currentTurn;
+    private int currentMonth;
     private final int totalMonths;
 
     //Constructor: Constructs a new Turn
-    //Postcondition: Constructs a new Turn and sets the round to 0 and decides how many months the game will be
+    //Postcondition: Constructs a new Turn and sets the month to 1 and decides how many months the game will be
     public Turn(){
-        this.currentTurn = 0;
+        this.currentMonth = 0;
         this.currentPlayer = null;
         this.inactivePlayer = null;
         this.totalMonths = ThreadLocalRandom.current().nextInt(1,4);
     }
 
-    //Accessor(selector): Returns the value of currentTurn
-    //Postcondition: Returned the value of currentTurn
-    public int getCurrentTurn(){
-        return this.currentTurn;
+    //Accessor(selector): Returns the value of currentMonth
+    //Postcondition: Returned the value of currentMonth
+    public int getCurrentMonth(){
+        return this.currentMonth;
     }
 
-    //Transformer(mutative): Sets a value to currentTurn
-    //Postcondition: Set the value of currentTurn to currentTurn
+    //Transformer(mutative): Sets a value to currentMonth
+    //Postcondition: Set the value of currentTurn to currentMonth
     //@param currentTurn the new value of currentTurn
-    public void setCurrentTurn(int currentTurn){
-        this.currentTurn = currentTurn;
+    public void setCurrentTurn(int currentMonth){
+        this.currentMonth = currentMonth;
     }
 
     //Accessor(selector): Returns the player who is playing now
@@ -45,17 +45,28 @@ public class Turn {
     //Postcondition: A new current player has been set
     //@param character p is the new current player
     public void setCurrentPlayer(character p){
+        p.setRoll(true);
+        p.setMove(true);
+        p.setEndTurn(false);
+
         this.currentPlayer = p;
     }
 
-    public void setInactivePlayer(character c) {
-        this.inactivePlayer = c;
+    public void setInactivePlayer(character p) {
+        p.setRoll(false);
+        p.setMove(false);
+        p.setEndTurn(false);
+        this.inactivePlayer = p;
     }
 
-    //Observer: Returns true if this turn is the final turn, otherwise returns false
-    //Postcondition: Returned true if it's the final turn
-    public boolean isFinalTurn(){
-        return currentTurn == totalMonths * 31;
+    //Observer: Returns true if this month is the final month, otherwise returns false
+    //Postcondition: Returned true if it's the final month
+    public boolean isFinalMonth(){
+        return currentMonth == totalMonths;
+    }
+
+    public int monthsLeft(){
+        return totalMonths - currentMonth;
     }
 
     //Observer: Returns true if the turn has finished, else returns false

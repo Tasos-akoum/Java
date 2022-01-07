@@ -20,10 +20,10 @@ public abstract class MailCard extends Card {
         this.euro = euro;
     }
 
-    public void showCard(){
+    public void showCard(Controller g){
         JFrame frame = new JFrame(this.getType());
         frame.setSize(600,250);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -37,6 +37,7 @@ public abstract class MailCard extends Card {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                action(g);
                 frame.dispose();
             }
         });

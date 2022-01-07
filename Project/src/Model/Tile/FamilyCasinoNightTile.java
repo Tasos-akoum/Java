@@ -3,6 +3,11 @@ package Model.Tile;
 import Controller.Controller;
 import Model.Player.character;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 //Class FamilyCasinoNightTile implements the family casino night tile
 public class FamilyCasinoNightTile extends Tile{
     //Constructor: Constructs a new family casino night tile
@@ -16,5 +21,17 @@ public class FamilyCasinoNightTile extends Tile{
     //@param c is the current player
     public void action(Controller g){
 
+
+        if(g.getCurrentPlayer().getDice().getValue() % 2 == 1){
+            g.board.addToJackpot(500);
+            g.getCurrentPlayer().addMoney(-500);
+            this.showMessage("You gave 500 to jackpot");
+        } else {
+            g.getCurrentPlayer().addMoney(500);
+            this.showMessage("You gained 500 from the bank");
+        }
+
+
     }
+
 }

@@ -1,8 +1,13 @@
 package Model.Player;
 
+import Controller.Controller;
 import Model.card.Card;
 import Model.Dice;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.net.URL;
 import java.util.ArrayList;
 
 //Class character is responsible for the logic and actions of the player
@@ -44,7 +49,7 @@ public class character implements PlayerInterface{
     //Observer: Returns true if the player has finished all his actions and can end his turn otherwise returns false
     //Postcondition: Returns if the player can end his turn
     public boolean canEndTurn(){
-        return false;
+        return endTurn;
     }
 
     //Observer: Returns true if the player can move to a new position otherwise it returns false
@@ -70,7 +75,7 @@ public class character implements PlayerInterface{
     //Postcondition: Dice rolled and its value changed
     public void rollDice(){
         this.dice.rollDice();
-        roll = false;
+        playSound("dice.wav");
     }
 
     //Observer: Returns true if the player has ended his turn otherwise returns false
@@ -89,18 +94,10 @@ public class character implements PlayerInterface{
     //Postcondition: The selected card is sold giving the character money and is removed from the arraylist
     //@param card is the card that will be sold
     public void sellCard(Card card){
-
     }
 
-    public void drawCard(Card card){
-
-    }
-
-    //Transformer(mutative): Buys a card
-    //Postcondition: The card has been bought and is added to they array list
-    //@param card is the card that will be bought
-    public void buyCard(Card card){
-
+    public void drawCard(Card card, Controller g){
+        card.showCard(g);
     }
 
     public void addCard(Card card){
@@ -152,6 +149,10 @@ public class character implements PlayerInterface{
     //Postcondition: Returned the bills of the character
     public int getBills(){
         return this.bills;
+    }
+
+    public ArrayList<Card> getCards(){
+        return this.cards;
     }
 
     //Accessor(selector): Returns the x position of the character
@@ -235,5 +236,22 @@ public class character implements PlayerInterface{
         this.bills += bills;
     }
 
+    public void playSound(String file)
+    {
+        try
+        {
+            ClassLoader cldr = this.getClass().getClassLoader();
+            URL url= cldr.getResource("Resources/audio/"+file);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+            Clip clip = AudioSystem.getClip( );
+            clip.open(audioInputStream);
+            clip.start( );
+        }
+        catch(Exception ex)
+        {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace( );
+        }
+    }
 
 }

@@ -17,5 +17,6 @@ public class SweepstakesTile extends Tile{
     public void action(Controller g){
         g.getCurrentPlayer().rollDice();
         g.getCurrentPlayer().addMoney(1000 * g.getCurrentPlayer().getDice().getValue());
+
     }
 }

@@ -1,5 +1,6 @@
 package Model;
 
+import Model.Player.character;
 import Model.Tile.*;
 import Model.card.DealCard;
 import Model.card.MailCards.*;
@@ -7,6 +8,7 @@ import Model.card.MailCards.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 //Class Board: The class that makes the board ready for the start of the game
@@ -23,9 +25,12 @@ public class Board {
     };
 
     private int day_index;
+    private int jackpot;
 
     private ArrayList<DealCard> dealCards;
+    private ArrayList<DealCard> disposedDealCards;
     private ArrayList<MailCard> mailCards;
+    private ArrayList<MailCard> disposedMailCards;
     private boolean isEmpty;
 
     //Constructor: Constructs a new board and initializes everything it needs
@@ -35,11 +40,14 @@ public class Board {
         this.mailCards = new ArrayList<>();
         this.dealCards = new ArrayList<>();
         this.isEmpty = true;
+        this.jackpot = 0;
         this.day_index = ThreadLocalRandom.current().nextInt(0,7);
         this.init_tiles();
         this.shuffleTiles();
         this.assignDays(31);
         this.init_cards();
+        this.shuffleDealCards();
+        this.shuffleMailCards();
     }
 
     //Transformer(mutative): Initializes the tiles on the board
@@ -212,12 +220,43 @@ public class Board {
         }
     }
 
+    public void shuffleDealCards(){
+        Collections.shuffle(dealCards);
+    }
+
+    public void shuffleMailCards(){
+        Collections.shuffle(mailCards);
+    }
+
+    public void replenishDealCards(){
+        dealCards.addAll(disposedDealCards);
+        shuffleDealCards();
+    }
+
+    public void replenishMailCards(){
+        mailCards.addAll(disposedMailCards);
+        shuffleMailCards();
+    }
+
     public ArrayList<MailCard> getMailCards(){
         return this.mailCards;
     }
 
     public ArrayList<DealCard> getDealCards(){
         return this.dealCards;
+    }
+
+    public int getJackpot(){
+        return this.jackpot;
+    }
+
+    public void addToJackpot(int amount){
+        this.jackpot += amount;
+    }
+
+    public void giveJackpot(character c){
+        c.addMoney(jackpot);
+        jackpot = 0;
     }
 
     //Accessor(selector): Returns the tile in the i position of the board
@@ -237,7 +276,5 @@ public class Board {
 
     public static void main(String[] args) {
         Board board = new Board();
-
-        board.getDealCards().get(10).showCard();
     }
 }

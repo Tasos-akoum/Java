@@ -16,6 +16,8 @@ public class YardSaleTile extends Tile{
     //Postcondition: Player paid the value
     //@param c is the current player
     public void action(Controller g){
+        g.getCurrentPlayer().rollDice();
+        g.getCurrentPlayer().addMoney(-g.getCurrentPlayer().getDice().getValue() * 100);
 
     }
 }

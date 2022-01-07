@@ -4,6 +4,7 @@ import Model.Board;
 import Model.Player.character;
 import Model.Turn;
 
+import javax.swing.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 //Class Controller is the class that connects all the assets of the game and controls the game flow
@@ -84,7 +85,7 @@ public class Controller {
     public void changePlayerPosition(character c){
         if(c.canMove()){
             if(c.getPositionY() + c.getDice().getValue() > 6){
-                if(c.getPositionX() + 1 == 5){
+                if(c.getPositionX() == 4){
                     c.setPosition(4,3);
                 } else {
                     c.setPosition(c.getPositionX() + 1, c.getPositionY() + c.getDice().getValue() - 7);
@@ -94,35 +95,48 @@ public class Controller {
             }
 
             c.setMove(false);
+            System.out.println(c.getPositionX() + " " + c.getPositionY());
+            board.getTile(c.getPositionX(), c.getPositionY()).action(this);
+            c.setEndTurn(true);
         }
     }
 
     public void rollDice(character c){
         if(c.canRoll()){
             c.rollDice();
-            changePlayerPosition(c);
             c.setRoll(false);
-            board.getTile(c.getPositionX(), c.getPositionY()).action(this);
+        }
+    }
+
+    public void getLoan(character c){
+        JFrame frame = new JFrame();
+        try {
+            int loan = Integer.parseInt(JOptionPane.showInputDialog("How much money do you want?"));
+            if (loan > 0)
+                c.addMoney(loan);
+            else
+                JOptionPane.showMessageDialog(frame ,"Invalid amount");
+        } catch (Exception e){
+            System.err.println(e.getMessage());
         }
     }
 
     public void endTurn(character c){
         if(c.canEndTurn()){
             changeCurrentPlayer();
-            this.getCurrentPlayer().setMove(true);
-            this.getCurrentPlayer().setRoll(true);
-
-            this.getInactivePlayer().setRoll(false);
-            this.getInactivePlayer().setMove(false);
-            this.getInactivePlayer().setEndTurn(false);
         }
     }
 
     //Transformer(mutative): Changes who the current player is
     //Postcondition: Current player is changed
     public void changeCurrentPlayer(){
-        turn.setInactivePlayer(turn.getCurrentPlayer());
-        turn.setCurrentPlayer((turn.getCurrentPlayer().getId() == 1 ? c2 : c1));
+        if(turn.getCurrentPlayer().getId() == 1){
+            turn.setCurrentPlayer(c2);
+            turn.setInactivePlayer(c1);
+        } else {
+            turn.setCurrentPlayer(c1);
+            turn.setInactivePlayer(c2);
+        }
     }
 
     //Transformer(mutative): Updates the board with the new information
