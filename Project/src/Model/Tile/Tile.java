@@ -1,16 +1,12 @@
 package Model.Tile;
 
 import Controller.Controller;
-import Model.Player.character;
-import Model.card.MailCards.PayTheNeighborCard;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 //Abstract class Tile implements the basic functionality of the tiles
-public abstract class Tile{
+public abstract class Tile implements Serializable {
     private final String type;
     private String day;
 

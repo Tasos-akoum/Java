@@ -1,9 +1,11 @@
 package Model;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.concurrent.ThreadLocalRandom;
 
 //Class Dice contains all the actions the dice can perform and stores its values
-public class Dice {
+public class Dice implements Serializable {
     private int value;
 
     //Constructor: Constructs a new Dice with a value of 0

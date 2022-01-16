@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 //Class DealCard is the class responsible for creating Deal cards and their logic.
 //They have a cost, a value and a choice, whether to get the deal or to ignore it
@@ -22,10 +23,14 @@ public class DealCard extends Card{
         this.value = value;
     }
 
+    //Transformer(mutative): Displays the card along with its cost and value to the user and lets him select an action
+    //Postcondition: Card displayed and action performed
     public void showCard(Controller g){
-        JFrame frame = new JFrame(this.getType());
-        frame.setSize(600,250);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JFrame parent = new JFrame();
+
+        JDialog frame = new JDialog(parent, this.getType(), true);
+        frame.setSize(650,250);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
         GridBagLayout layout = new GridBagLayout();
@@ -64,6 +69,7 @@ public class DealCard extends Card{
 
         gbc.gridx = 1;
         gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 25, 0, 0);
         frame.add(message,gbc);
 
@@ -87,16 +93,8 @@ public class DealCard extends Card{
     //Postcondition: The deal is either dismissed or accepted
     //@param c is the player that gets the deal
     public void action(Controller g){
-        if(g.getCurrentPlayer().getMoney() + g.getCurrentPlayer().getLoan() >= this.cost){
-            g.getCurrentPlayer().addMoney(-this.cost);
-            g.getCurrentPlayer().replenishMoney();
-            g.getCurrentPlayer().addCard(this);
-        }
-        else{
-            g.getCurrentPlayer().addLoan(g.getCurrentPlayer().calculateLoan(this.cost));
-            this.action(g);
-        }
-
+        g.getCurrentPlayer().pay(this.cost);
+        g.getCurrentPlayer().addCard(this);
     }
 
     //Accessor(selector):Returns the cost of the card

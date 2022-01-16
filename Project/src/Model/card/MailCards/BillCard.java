@@ -15,6 +15,6 @@ public class BillCard extends MailCard{
     //Postcondition: Character paid the value
     //@param c is the current player
     public void action(Controller g){
-        g.getCurrentPlayer().addCard(this);
+        g.getCurrentPlayer().addBills(this.getEuro());
     }
 }

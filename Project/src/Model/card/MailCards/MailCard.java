@@ -2,7 +2,6 @@ package Model.card.MailCards;
 
 import Controller.Controller;
 import Model.card.Card;
-import Model.Player.character;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,9 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 //Abstract class MailCard implements the basic functionality of mail cards
-public abstract class MailCard extends Card {
+public abstract class MailCard extends Card{
     private int euro;
     private String choice;
+
     //Constructor: Constructs a new MailCard with a type and a euro value
     //Postcondition: MailCard successfully constructed
     public MailCard(String type, int euro){
@@ -20,9 +20,12 @@ public abstract class MailCard extends Card {
         this.euro = euro;
     }
 
+    //Transformer(mutative): Shows card's details and lets the player select an action
+    //Postcondition: Card displayed and player selects action
     public void showCard(Controller g){
-        JFrame frame = new JFrame(this.getType());
-        frame.setSize(600,250);
+        JFrame parent = new JFrame();
+        JDialog frame = new JDialog(parent, this.getType(), true);
+        frame.setSize(650,250);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         GridBagLayout layout = new GridBagLayout();
@@ -49,6 +52,7 @@ public abstract class MailCard extends Card {
 
         gbc.gridx = 1;
         gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0,25,0,0);
         frame.add(message, gbc);
 
@@ -59,6 +63,10 @@ public abstract class MailCard extends Card {
         gbc.gridy = 1;
         gbc.weightx = 0;
         frame.add(button, gbc);
+
+        JDialog dialog = new JDialog(frame);
+        dialog.setVisible(true);
+        dialog.setModal(true);
         frame.setVisible(true);
     }
 
@@ -73,11 +81,15 @@ public abstract class MailCard extends Card {
         return this.euro;
     }
 
-
+    //Accessor(selector) Returns the choice text of the card
+    //Postcondition: Returned the choice
     public String getChoice(){
         return this.choice;
     }
 
+    //Transformer(mutative): Sets the choice text of the card
+    //Postcondition: Choice text set
+    //@param choice is the new choice text of the card
     public void setChoice(String choice){
         this.choice = choice;
     }
@@ -88,4 +100,5 @@ public abstract class MailCard extends Card {
     public void setEuro(int euro){
         this.euro = euro;
     }
+
 }

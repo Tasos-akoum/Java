@@ -8,6 +8,6 @@ public class StartTile extends Tile{
     }
 
     public void action(Controller g){
-
+        g.getCurrentPlayer().setEndTurn(true);
     }
 }

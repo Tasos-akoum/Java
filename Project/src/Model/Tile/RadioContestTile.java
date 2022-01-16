@@ -22,13 +22,19 @@ public class RadioContestTile extends Tile{
         currentPlayer.rollDice();
         inactivePlayer.rollDice();
 
-        if(currentPlayer.getDice().getValue() > inactivePlayer.getDice().getValue())
+        g.playSound("add_money.wav");
+        if(currentPlayer.getDice().getValue() > inactivePlayer.getDice().getValue()) {
             currentPlayer.addMoney(1000);
-        else if(currentPlayer.getDice().getValue() < inactivePlayer.getDice().getValue())
+            this.showMessage("Ο παίχτης" + currentPlayer.getId() + " πήρε 1000$");
+        }
+        else if(currentPlayer.getDice().getValue() < inactivePlayer.getDice().getValue()) {
             inactivePlayer.addMoney(1000);
+            this.showMessage("Ο παίχτης" + inactivePlayer.getId() + " πήρε 1000$");
+        }
         else
             this.action(g);
 
+        currentPlayer.setEndTurn(true);
     }
 
 

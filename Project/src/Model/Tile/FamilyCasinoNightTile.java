@@ -22,15 +22,17 @@ public class FamilyCasinoNightTile extends Tile{
     public void action(Controller g){
 
 
+        g.playSound("casino.wav");
         if(g.getCurrentPlayer().getDice().getValue() % 2 == 1){
             g.board.addToJackpot(500);
-            g.getCurrentPlayer().addMoney(-500);
-            this.showMessage("You gave 500 to jackpot");
+            g.getCurrentPlayer().pay(500);
+            this.showMessage("Έδωσες 500$ στο jackpot");
         } else {
             g.getCurrentPlayer().addMoney(500);
-            this.showMessage("You gained 500 from the bank");
+            this.showMessage("Πήρες 500$ από την τράπεζα");
         }
 
+        g.getCurrentPlayer().setEndTurn(true);
 
     }
 

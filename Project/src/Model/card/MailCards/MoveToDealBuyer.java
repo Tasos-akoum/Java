@@ -26,5 +26,7 @@ public class MoveToDealBuyer extends MailCard{
                 }
             }
         }
+
+        c.setEndTurn(true);
     }
 }

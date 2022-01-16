@@ -3,6 +3,7 @@ package Model.Player;
 import Controller.Controller;
 import Model.card.Card;
 import Model.Dice;
+import Model.card.DealCard;
 
 import java.util.ArrayList;
 
@@ -27,11 +28,11 @@ interface PlayerInterface{
     boolean hasFinished();
 
     int calculateLoan(int amount);
-    void replenishMoney();
+    void pay(int amount);
 
     ArrayList<Card> getCards();
     void drawCard(Card card, Controller g);
-    void sellCard(Card card);
+    void sellCard(DealCard card);
     void addCard(Card card);
 
     void setMoney(int money);

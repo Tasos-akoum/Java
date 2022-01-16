@@ -31,20 +31,16 @@ public class MessageTile extends Tile{
         Board board = g.board;
 
         for(int i = 0; i < this.value; i++){
-            boolean ok = false;
-            while(!ok){
-                if(board.getMailCards().get(board.getMailCards().size() - 1) instanceof MoveToDealBuyer){
-                    board.getMailCards().remove(board.getMailCards().size() - 1);
-                } else {
-                    g.getCurrentPlayer().drawCard(board.getMailCards().get(board.getMailCards().size() - 1), g);
-                    board.getMailCards().remove(board.getMailCards().size() - 1);
-                    ok = true;
-                }
+                g.playSound("draw.wav");
+                g.getCurrentPlayer().drawCard(board.getMailCards().get(board.getMailCards().size() - 1), g);
+                board.getDisposedMailCards().add(board.getMailCards().get(board.getMailCards().size() - 1));
+                board.getMailCards().remove(board.getMailCards().size() - 1);
 
                 if(board.getMailCards().size() == 0)
                     board.replenishMailCards();
-            }
         }
+
+        c.setEndTurn(true);
 
     }
 

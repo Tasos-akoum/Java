@@ -18,19 +18,8 @@ public class PayTheNeighborCard extends MailCard{
         character currentPlayer = g.getCurrentPlayer();
         character inactivePlayer = g.getInactivePlayer();
 
-        if(currentPlayer.getMoney() + currentPlayer.getLoan() >= this.getEuro()){
-            currentPlayer.addMoney(-this.getEuro());
-            if(currentPlayer.getMoney() < 0){
-                currentPlayer.addLoan(currentPlayer.getMoney());
-                currentPlayer.setMoney(0);
-            }
-
-            inactivePlayer.addMoney(this.getEuro());
-        }
-        else{
-            currentPlayer.addLoan(currentPlayer.calculateLoan(this.getEuro()));
-            this.action(g);
-        }
+        currentPlayer.pay(this.getEuro());
+        inactivePlayer.addMoney(this.getEuro());
     }
 
 }

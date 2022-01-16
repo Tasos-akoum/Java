@@ -17,7 +17,11 @@ public class YardSaleTile extends Tile{
     //@param c is the current player
     public void action(Controller g){
         g.getCurrentPlayer().rollDice();
-        g.getCurrentPlayer().addMoney(-g.getCurrentPlayer().getDice().getValue() * 100);
+        g.getCurrentPlayer().pay(g.getCurrentPlayer().getDice().getValue() * 100);
+        g.playSound("doom.wav");
+        this.showMessage("Ο παίχτης" + g.getCurrentPlayer().getId() + " πλήρωσε " + g.getCurrentPlayer().getDice().getValue() * 100 + "$");
+
+        g.getCurrentPlayer().setEndTurn(true);
 
     }
 }

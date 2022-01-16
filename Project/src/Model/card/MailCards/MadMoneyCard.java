@@ -18,19 +18,8 @@ public class MadMoneyCard extends MailCard{
         character currentPlayer = g.getCurrentPlayer();
         character inactivePlayer = g.getInactivePlayer();
 
-        if(inactivePlayer.getMoney() + inactivePlayer.getLoan() >= this.getEuro()){
-            inactivePlayer.addMoney(-this.getEuro());
-            if(inactivePlayer.getMoney() < 0){
-                inactivePlayer.addLoan(inactivePlayer.getMoney());
-                inactivePlayer.setMoney(0);
-            }
-
-            currentPlayer.addMoney(this.getEuro());
-        }
-        else{
-            inactivePlayer.addLoan(inactivePlayer.calculateLoan(this.getEuro()));
-            this.action(g);
-        }
+        inactivePlayer.pay(this.getEuro());
+        currentPlayer.addMoney(this.getEuro());
     }
 }
 

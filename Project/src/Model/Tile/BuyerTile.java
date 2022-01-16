@@ -1,7 +1,9 @@
 package Model.Tile;
 
 import Controller.Controller;
-import Model.Player.character;
+import Model.card.DealCard;
+
+import javax.swing.*;
 
 //Class BuyerTile implements the buyer tile
 public class BuyerTile extends Tile{
@@ -16,7 +18,19 @@ public class BuyerTile extends Tile{
     //Postcondition: Selected card sold
     //@param c is the current player
     public void action(Controller g){
-//        if(g.getCurrentPlayer().getC)
+        if(g.getCurrentPlayer().getCards().size() == 1){
+            if(g.getCurrentPlayer().getCards().get(0) instanceof DealCard)
+                g.getCurrentPlayer().setSell(true);
+                g.getCurrentPlayer().sellCard((DealCard) g.getCurrentPlayer().getCards().get(0));
+        }
+        else if(g.getCurrentPlayer().getCards().size() > 1){
+            g.getCurrentPlayer().setSell(true);
+            g.getCurrentPlayer().seeCards();
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Δεν έχεις κάρτες συμφωνίας");
+        }
+        g.getCurrentPlayer().setEndTurn(true);
     }
 
 }

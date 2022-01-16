@@ -18,11 +18,15 @@ public class DealTile extends Tile{
     //@param c is the current player
     public void action(Controller g) {
         Board b = g.board;
+
+        g.playSound("draw.wav");
         g.getCurrentPlayer().drawCard(b.getDealCards().get(b.getDealCards().size() - 1), g);
+        b.getDisposedDealCards().add(b.getDealCards().get(b.getDealCards().size() - 1));
         b.getDealCards().remove(b.getDealCards().size() - 1);
         if(b.getDealCards().size() == 0){
             b.replenishDealCards();
         }
 
+        g.getCurrentPlayer().setEndTurn(true);
     }
 }

@@ -5,14 +5,13 @@ import Model.Player.character;
 import Model.Tile.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.CookieHandler;
 import java.net.URL;
 
-public class View extends JFrame {
+//Class View is the interface that the players interact with to play the game
+public class View extends JFrame{
 
     private final int width = 1750;
     private final int height = 900;
@@ -30,6 +29,9 @@ public class View extends JFrame {
 
     private JLabel currentPlayer;
     private JLabel lastAction;
+    private JLabel monthsLeft;
+    private JLabel jackpot;
+    private JLabel jackpot_value;
     private JLabel[][] tiles;
     private JLabel[][] days;
     private JLabel bg;
@@ -43,11 +45,10 @@ public class View extends JFrame {
     private JButton getLoanButton1, getLoanButton2;
     private JButton endTurn1, endTurn2;
     private JButton showCards1, showCards2;
-    private JButton drawDealCard, drawMailCard;
 
     public View(){
-        game = new Controller();
         cldr = this.getClass().getClassLoader();
+        game = new Controller();
 
         basic_panel = new JLayeredPane();
         player1Field = new JDesktopPane();
@@ -75,8 +76,6 @@ public class View extends JFrame {
         endTurn2 = new JButton("End turn");
         showCards1 = new JButton("My DealCards");
         showCards2 = new JButton("My DealCards");
-        drawDealCard = new JButton();
-        drawMailCard = new JButton();
 
         imageURL = cldr.getResource("Resources/basic/logo.png");
         this.setIconImage(new ImageIcon(imageURL).getImage());
@@ -98,12 +97,19 @@ public class View extends JFrame {
         update.start();
     }
 
+    //Transformer(mutative): Stores the image in the path in the variable image and scales its width and height
+    //Postcondition: Image stores and width and height set
+    //@param path is the path to the image file, @param width is the width of the image
+    //@param height is the height of the image
     private void getImage(String path, int width, int height){
         imageURL = cldr.getResource(path);
         image = new ImageIcon(imageURL).getImage();
         image = image.getScaledInstance(width,height, Image.SCALE_SMOOTH);
     }
 
+    //Transformer(mutative): Sets an image to all tiles depending on their type
+    //Postcondition: All tiles have images
+    //@param tileLabel displays the image
     private void tilesSetImage(JLabel tileLabel, Tile tile, int width, int height){
         if(tile instanceof BuyerTile){
             getImage("Resources/basic/buyer.png", width, height);
@@ -160,6 +166,8 @@ public class View extends JFrame {
         }
     }
 
+    //Transformer(mutative): Initializes some labels and adds them to the basic_panel layerpane
+    //Postcondition: Components initialized
     private void initComponents(){
         //Initialize the logo
         getImage("Resources/basic/logo.png", width-420,200);
@@ -182,10 +190,24 @@ public class View extends JFrame {
         player2_pawn.setIcon(new ImageIcon(image));
         basic_panel.add(player2_pawn, JLayeredPane.MODAL_LAYER);
 
+        getImage("Resources/basic/jackpot.png", 400,90);
+        jackpot = new JLabel();
+        jackpot.setIcon(new ImageIcon(image));
+        jackpot.setBounds(width - 900, height - 160, 400, 90);
+        basic_panel.add(jackpot, JLayeredPane.PALETTE_LAYER);
+
+        jackpot_value = new JLabel("Jackpot: 0");
+        jackpot_value.setBounds(width - 750, height - 60, 150, 20);
+        jackpot_value.setForeground(Color.white);
+        jackpot_value.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
+        basic_panel.add(jackpot_value, JLayeredPane.PALETTE_LAYER);
+
         init_playerFields();
         init_infoBox();
     }
 
+    //Transformer(mutative): Initializes tiles
+    //Postcondition: Tiles initialized
     private void init_tiles(){
         int tiles_width = 190;
         int tiles_height = 108;
@@ -221,6 +243,18 @@ public class View extends JFrame {
         tileDistance = 0;
 
         //Initialized each date label with days and dates
+        this.setDays(Color.orange);
+
+    }
+
+    //Transformer(mutative):Sets a date to each tile
+    //Postcondition: days set
+    private void setDays(Color color){
+        int tiles_width = 190;
+        int tiles_height = 108;
+        int tileDistance = 0;
+
+        //Initialized each date label with days and dates
         for(int i = 0; i < 5; i++){
             int dayLabel_distance = 0;
             if(i != 4) {
@@ -229,21 +263,21 @@ public class View extends JFrame {
                         days[i][j] = new JLabel(game.board.getTile(i, j).getDay(), SwingConstants.CENTER);
                         days[i][j].setBounds(180 * j + (dayLabel_distance * j), 200 + (i * tiles_height) + (tileDistance * i), tiles_width, 25);
                         days[i][j].setOpaque(true);
-                        days[i][j].setBackground(Color.orange);
+                        days[i][j].setBackground(color);
                         days[i][j].setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.white));
                         basic_panel.add(days[i][j], JLayeredPane.PALETTE_LAYER);
 
                         dayLabel_distance = 10;
                     }
                 }
-                 tileDistance = 25;
+                tileDistance = 25;
             } else {
                 for (int j = 0; j < 4; j++) {
                     if(game.board.getTile(i,j) != null) {
                         days[i][j] = new JLabel(game.board.getTile(i, j).getDay(), SwingConstants.CENTER);
                         days[i][j].setBounds(190 * j + (dayLabel_distance * j), 200 + (i * tiles_height) + (tileDistance * i), tiles_width, 25);
                         days[i][j].setOpaque(true);
-                        days[i][j].setBackground(Color.orange);
+                        days[i][j].setBackground(color);
                         days[i][j].setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.white));
                         basic_panel.add(days[i][j], JLayeredPane.PALETTE_LAYER);
                     }
@@ -253,6 +287,20 @@ public class View extends JFrame {
 
     }
 
+    //Transformer(mutative): Update the days and dates everytime a player goes to the next month
+    private void updateDays(Color color) {
+        for(int i = 0; i < 5; i++){
+            for(int j = 0; j < 7; j++){
+                if(days[i][j] != null) {
+                    days[i][j].setText(game.board.getTile(i,j).getDay());
+                    days[i][j].setBackground(color);
+                }
+            }
+        }
+    }
+
+    //Transformer(mutative): Initializes infobox
+    //Postcondition: infobox initialized
     private void init_infoBox(){
         infoBox.setBounds(width - 395, 250, 380, 150);
         infoBox.setBorder(BorderFactory.createMatteBorder(3,3,3,3,Color.black));
@@ -264,12 +312,16 @@ public class View extends JFrame {
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         infoBox.add(new JLabel("Info Box"), gbc);
 
-        currentPlayer = new JLabel("Current Player: Player" + game.getCurrentPlayer().getId());
+        monthsLeft = new JLabel("Months left: " + game.getMonthsLeft());
         gbc.gridy = 1;
+        infoBox.add(monthsLeft, gbc);
+
+        currentPlayer = new JLabel("Current Player: Player" + game.getCurrentPlayer().getId());
+        gbc.gridy = 2;
         infoBox.add(currentPlayer, gbc);
 
         lastAction = new JLabel("-->");
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         infoBox.add(lastAction, gbc);
 
         basic_panel.add(infoBox, JLayeredPane.PALETTE_LAYER);
@@ -277,6 +329,8 @@ public class View extends JFrame {
 
 
 
+    //Transformers(mutative): Initializes player fields
+    //Postcondition: Player fields initialized
     private void init_playerFields(){
         player1Field.setBounds(width - 395, 10, 380, 190);
         player1Field.setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.blue));
@@ -358,6 +412,8 @@ public class View extends JFrame {
         basic_panel.add(player2Field, JLayeredPane.PALETTE_LAYER);
     }
 
+    //Transformer(mutative): Initializes the buttons and their actions
+    //Postcondition: Buttons initialized and can perform actions
     private void init_buttons(){
         rollDiceButton1.addActionListener(new ActionListener() {
             @Override
@@ -372,6 +428,20 @@ public class View extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 game.rollDice(game.getPlayer(2));
                 game.changePlayerPosition(game.getPlayer(2));
+            }
+        });
+
+        showCards1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                game.getPlayer(1).seeCards();
+            }
+        });
+
+        showCards2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                game.getPlayer(2).seeCards();
             }
         });
 
@@ -393,6 +463,13 @@ public class View extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 game.endTurn(game.getPlayer(1));
+                if(game.getCurrentMonth() == 2){
+                    updateDays(Color.blue);
+                }
+                else if(game.getCurrentMonth() == 3){
+                    updateDays(Color.green);
+                }
+                gameEnd();
             }
         });
 
@@ -400,6 +477,13 @@ public class View extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 game.endTurn(game.getPlayer(2));
+                if(game.getCurrentMonth() == 2){
+                    setDays(Color.blue);
+                }
+                else if(game.getCurrentMonth() == 3){
+                    setDays(Color.green);
+                }
+                gameEnd();
             }
         });
     }
@@ -417,6 +501,8 @@ public class View extends JFrame {
         }
     }
 
+    //Transformer(mutative): Updates the player pawns on the board
+    //Postcondition: Player pawns updated
     private void updatePlayerInfo(){
         player1info.setText("<html>Money: " + game.getPlayer(1).getMoney() + "<br>Loan: " + game.getPlayer(1).getLoan()
                 + "<br>Bills: " + game.getPlayer(1).getBills() +"</html>");
@@ -424,10 +510,56 @@ public class View extends JFrame {
                 + "<br>Bills: " + game.getPlayer(2).getBills() +"</html>");
     }
 
+    //Transformer(mutative): Updates the infobox info
+    //Postcondition: infobox info updated
     private void updateInfoBox(){
         currentPlayer.setText("Current Player: Player" + game.getCurrentPlayer().getId());
+        monthsLeft.setText("Months left: " + game.getMonthsLeft());
+
+        character c = game.getCurrentPlayer();
+        Tile tile = game.board.getTile(c.getPositionX(), c.getPositionY());
+
+        if(tile instanceof BuyerTile){
+            lastAction.setText("-->You can sell one of your Deal cards");
+        }
+        else if(tile instanceof DealTile){
+            lastAction.setText("-->Draw 1 Deal card");
+        }
+        else if(tile instanceof FamilyCasinoNightTile){
+            lastAction.setText("-->It's family casino night!");
+        }
+        else if(tile instanceof LotteryTile){
+            lastAction.setText("-->Prepare to enter the lottery!");
+        }
+        else if(tile instanceof MessageTile){
+            switch (((MessageTile) tile).getValue()){
+                case 1:
+                    lastAction.setText("-->Draw 1 Mail card");
+                    break;
+                case 2:
+                    lastAction.setText("-->Draw 2 Mail cards");
+                    break;
+                default:
+                    break;
+            }
+
+        }
+        else if(tile instanceof PaydayTile){
+            lastAction.setText("-->PayDay!");
+        }
+        else if(tile instanceof RadioContestTile){
+            lastAction.setText("-->Today is radio contest day!");
+        }
+        else if(tile instanceof SweepstakesTile){
+            lastAction.setText("-->You just rolled on sweepstakes!");
+        }
+        else if(tile instanceof YardSaleTile){
+            lastAction.setText("-->Roll the dice and pay the bank 100 * the amount you rolled");
+        }
     }
 
+    //Transformer(mutative): Updated dice image depending on their values
+    //Postcondition: Dice images updated
     private void updateDiceImage(){
         getImage("Resources/basic/dice-" + game.getPlayer(1).getDice().getValue() + ".jpg", 80, 40);
         dice1.setIcon(new ImageIcon(image));
@@ -436,6 +568,41 @@ public class View extends JFrame {
         dice2.setIcon(new ImageIcon(image));
     }
 
+    //Transformer(mutative): If the player can end turn, change color to the end turn button
+    //Postcondition: End turn button color changed
+    private void updateEndTurnButton(){
+        if(!game.getPlayer(1).canEndTurn())
+            endTurn1.setBackground(Color.black);
+        else
+            endTurn1.setBackground(null);
+
+        if(!game.getPlayer(2).canEndTurn())
+            endTurn2.setBackground(Color.black);
+        else
+            endTurn2.setBackground(null);
+    }
+
+    //Transformer(mutative): Shows the winner and asks to start a new game if the game has finished
+    //Postcondition: Game finished and players asked to end or start again
+    private void gameEnd(){
+        if(game.hasEnded()) {
+            if(game.getWinner() != 0)
+                JOptionPane.showMessageDialog(null, "Νίκησε ο παίχτης " +  game.getWinner() + "!");
+            else
+                JOptionPane.showMessageDialog(null, "Το παιχνίδι πήγε ισοπαλία");
+
+            this.dispose();
+            int choice = JOptionPane.showConfirmDialog(null, "Would you like to start a new game?","New game" ,JOptionPane.YES_NO_OPTION);
+            if(choice == JOptionPane.YES_OPTION){
+                new View();
+            }
+            else if(choice == JOptionPane.NO_OPTION){
+                System.exit(0);
+            }
+        }
+    }
+
+    //Class Update extends class Thread and is responsible for updating the info of the game every 300 milliseconds
     private class Update extends Thread{
         @Override
         public void run() {
@@ -445,7 +612,9 @@ public class View extends JFrame {
                     updatePlayerPosition();
                     updateInfoBox();
                     updateDiceImage();
-                    Thread.sleep(200);
+                    updateEndTurnButton();
+                    jackpot_value.setText("Jackpot: " + game.board.getJackpot());
+                    Thread.sleep(300);
                 }
             } catch (InterruptedException e){
                 System.err.println(e.getMessage());
@@ -455,6 +624,6 @@ public class View extends JFrame {
 
     public static void main(String[] args) {
         View view = new View();
-        view.game.getCurrentPlayer().setPosition(3,4);
+
     }
 }
