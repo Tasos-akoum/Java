@@ -8,7 +8,6 @@ import Model.card.MailCards.*;
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
@@ -280,7 +279,7 @@ public class Board{
     //@param c is the selected player
     public void giveJackpot(character c){
         c.addMoney(jackpot);
-        JOptionPane.showMessageDialog(null, "Πήρες " + jackpot + "$ από το jackpot");
+        JOptionPane.showMessageDialog(null, "Έφερες εξάρα, πήρες " + jackpot + "$ από το jackpot", "Jackpot", JOptionPane.INFORMATION_MESSAGE);
         jackpot = 0;
     }
 

@@ -1,13 +1,11 @@
 package Model.card;
 
 import Controller.Controller;
-import Model.Player.character;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
 
 //Class DealCard is the class responsible for creating Deal cards and their logic.
 //They have a cost, a value and a choice, whether to get the deal or to ignore it
@@ -15,7 +13,7 @@ public class DealCard extends Card{
     private int cost;
     private int value;
 
-    //Constructor: Concstructs a new DealCard with a type, cost, value, and choice
+    //Constructor: Constructs a new DealCard with a type, cost, value, and choice
     //Postcondition:Created a new DealCard with a cost, value and choice as 0(No choice)
     public DealCard(int cost, int value){
         super("Deal");
@@ -29,7 +27,7 @@ public class DealCard extends Card{
         JFrame parent = new JFrame();
 
         JDialog frame = new JDialog(parent, this.getType(), true);
-        frame.setSize(650,250);
+        frame.setSize(670,250);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
@@ -41,8 +39,6 @@ public class DealCard extends Card{
         JLabel image = new JLabel();
         image.setIcon(new ImageIcon(this.getImage()));
         JLabel message = new JLabel("<html>" + this.getMessage() + "<br>Τιμή αγοράς: " + this.cost + "<br>Τιμή πώλησης: " + this.value + "</html>");
-        JLabel cost_label = new JLabel("Τιμή αγοράς: " + this.cost);
-        JLabel value_label = new JLabel("Τιμή πώλησης: " + this.value);
 
         JButton choice1 = new JButton("Αγόρασε");
         choice1.addActionListener(new ActionListener() {
@@ -70,7 +66,7 @@ public class DealCard extends Card{
         gbc.gridx = 1;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(0, 25, 0, 0);
+        gbc.insets = new Insets(0, 25, 0, 5);
         frame.add(message,gbc);
 
 
@@ -79,22 +75,25 @@ public class DealCard extends Card{
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 0;
+        gbc.insets = new Insets(0, 0, 10, 0);
         frame.add(choice1,gbc);
 
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, 10, 0, 0);
+        gbc.insets = new Insets(0, 10, 10, 25);
         frame.add(choice2,gbc);
 
+        frame.pack();
         frame.setVisible(true);
     }
 
-    //Transformer(mutative):Decides if the player is going to accept the deal and follows through with what needs to happen
-    //Postcondition: The deal is either dismissed or accepted
-    //@param c is the player that gets the deal
+    //Transformer(mutative): Adds deal card to the current player
+    //Postcondition: Current player bought the deal card
+    //@param g is the game controller
     public void action(Controller g){
         g.getCurrentPlayer().pay(this.cost);
         g.getCurrentPlayer().addCard(this);
+        g.playSound("add_money.wav");
     }
 
     //Accessor(selector):Returns the cost of the card

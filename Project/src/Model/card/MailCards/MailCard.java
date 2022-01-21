@@ -25,7 +25,7 @@ public abstract class MailCard extends Card{
     public void showCard(Controller g){
         JFrame parent = new JFrame();
         JDialog frame = new JDialog(parent, this.getType(), true);
-        frame.setSize(650,250);
+        frame.setSize(670,250);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         GridBagLayout layout = new GridBagLayout();
@@ -53,26 +53,25 @@ public abstract class MailCard extends Card{
         gbc.gridx = 1;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(0,25,0,0);
+        gbc.insets = new Insets(0,25,0,10);
         frame.add(message, gbc);
 
         gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, -60,0,0);
-        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(0, 0,10,0);
+        gbc.gridx = 0;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.gridy = 1;
         gbc.weightx = 0;
         frame.add(button, gbc);
 
-        JDialog dialog = new JDialog(frame);
-        dialog.setVisible(true);
-        dialog.setModal(true);
+        frame.pack();
         frame.setVisible(true);
     }
 
     //Transformer(mutative): Does some action
     //Postcondition: action finished
-    //@param c is the current player
+    //@param g is the game controller
     public abstract void action(Controller g);
 
     //Accessor(selector): Returns the euro value of the card

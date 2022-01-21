@@ -2,7 +2,6 @@ package Model.Tile;
 
 import Controller.Controller;
 import Model.Board;
-import Model.Player.character;
 
 //Class DealTile implements the deal tiles
 public class DealTile extends Tile{
@@ -15,7 +14,7 @@ public class DealTile extends Tile{
     @Override
     //Transformer(mutative): Draws a deal card
     //Postcondition: Deal card drawn and is accepted or ignored
-    //@param c is the current player
+    //@param g is the game controller
     public void action(Controller g) {
         Board b = g.board;
 

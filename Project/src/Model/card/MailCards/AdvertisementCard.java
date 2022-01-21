@@ -13,8 +13,9 @@ public class AdvertisementCard extends MailCard{
 
     //Transformer(mutative): Character sells the card for the euro value
     //Postcondition: Sold the card and got the money
-    //@param c is the current character
+    //@param g is the game controller
     public void action(Controller g){
+        g.playSound("add_money.wav");
         g.getCurrentPlayer().addMoney(this.getEuro());
     }
 }

@@ -14,12 +14,15 @@ public class SweepstakesTile extends Tile{
     @Override
     //Transformer(mutative): Rolls the dice and wins 1000 * the value of the dice euros
     //Postcondition: Player wins 1000 * dice.getValue() euros
+    //@param g is the game controller
     public void action(Controller g){
-        g.getCurrentPlayer().rollDice();
-        g.getCurrentPlayer().addMoney(1000 * g.getCurrentPlayer().getDice().getValue());
-        g.playSound("add_money.wav");
-        this.showMessage("Ο παίχτης" + g.getCurrentPlayer().getId() + " πήρε " + 1000 * g.getCurrentPlayer().getDice().getValue() + "$");
+        character currentPlayer = g.getCurrentPlayer();
 
-        g.getCurrentPlayer().setEndTurn(true);
+        currentPlayer.rollDice();
+        currentPlayer.addMoney(1000 * currentPlayer.getDice().getValue());
+        g.playSound("add_money.wav");
+        this.showMessage("Ο παίχτης" + currentPlayer.getId() + " πήρε " + 1000 * currentPlayer.getDice().getValue() + "$");
+
+        currentPlayer.setEndTurn(true);
     }
 }

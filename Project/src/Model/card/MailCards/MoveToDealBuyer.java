@@ -14,19 +14,24 @@ public class MoveToDealBuyer extends MailCard{
 
     //Transformer(mutative): Move the character to the next buyer tile or deal tile
     //Postcondition: Moved character to the next buyer or deal tile
-    //@param c is the character
+    //@param g is the game controller
     public void action(Controller g){
         character c = g.getCurrentPlayer();
 
+        breakpoint:
         for(int i = c.getPositionX(); i < 5; i++){
-            for(int j = c.getPositionY(); j < 7; j++){
-                if(g.board.getTile(i,j) instanceof BuyerTile){
+            for(int j = 0; j < 7; j++){
+                if(g.board.getTile(i,j) instanceof BuyerTile && (i * 7) + j > (c.getPositionX() * 7) + c.getPositionY()){ //(i*7) + j is the position on the map if each tile is a number
+                    g.playSound("move.wav");
                     c.setPosition(i,j);
                     g.board.getTile(i,j).action(g);
+                    break breakpoint; //when we find the first buyer tile, get out of the loops and set endTurn to true
                 }
             }
         }
 
+
         c.setEndTurn(true);
     }
+
 }

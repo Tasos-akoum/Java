@@ -13,11 +13,12 @@ public class PayTheNeighborCard extends MailCard{
     @Override
     //Transformer(mutative): Makes the player pay the enemy player money
     //Postcondition: Player paid the enemy player
-    //@param c is the current player
+    //@param g is the game controller
     public void action(Controller g){
         character currentPlayer = g.getCurrentPlayer();
         character inactivePlayer = g.getInactivePlayer();
 
+        g.playSound("doom.wav");
         currentPlayer.pay(this.getEuro());
         inactivePlayer.addMoney(this.getEuro());
     }

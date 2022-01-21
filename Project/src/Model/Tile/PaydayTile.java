@@ -1,8 +1,7 @@
 package Model.Tile;
 
 import Controller.Controller;
-import Model.card.Card;
-import Model.card.MailCards.BillCard;
+import Model.Player.character;
 
 import javax.swing.*;
 
@@ -18,56 +17,65 @@ public class PaydayTile extends Tile{
     //Moves the player to the next month and if it's the final month, the player stops playing
     //and completes all the actions that are necessary
     //Postcondition: Actions complete
+    //@param g is the game controller
     public void action(Controller g){
-        g.getCurrentPlayer().addMoney(3500);
+        character currentPlayer = g.getCurrentPlayer();
 
-        g.getCurrentPlayer().pay(g.getCurrentPlayer().getBills());
-        g.getCurrentPlayer().setBills(0);
+        currentPlayer.addMoney(3500);
 
-        g.getCurrentPlayer().pay((g.getCurrentPlayer().getLoan() * 10) / 100);
+        currentPlayer.pay(currentPlayer.getBills());
+        currentPlayer.setBills(0);
+        this.showMessage("Πλήρωσες τους λογαριασμούς σου");
 
-        if(g.getCurrentPlayer().getMoney() >= g.getCurrentPlayer().getLoan() && g.getCurrentPlayer().getLoan() != 0){
-            int reply = JOptionPane.showConfirmDialog(null, "Would you like to pay your loan?", "Question", JOptionPane.YES_NO_OPTION);
+        currentPlayer.pay((currentPlayer.getLoan() * 10) / 100);
+        this.showMessage("Πλήρωσες φόρο 10% του δανείου που έχεις");
+
+        if(currentPlayer.getMoney() >= currentPlayer.getLoan() && currentPlayer.getLoan() != 0){
+            int reply = JOptionPane.showConfirmDialog(null, "Θέλεις να πληρώσεις το δάνειο σου?", "Ερώτηση", JOptionPane.YES_NO_OPTION);
             if(reply == JOptionPane.YES_OPTION){
                 try {
-                    int amount = Integer.parseInt(JOptionPane.showInputDialog("How much do you want to pay? (Must be multiple of 1000)"));
-                    while(amount < 0 || amount > g.getCurrentPlayer().getMoney() || amount > g.getCurrentPlayer().getLoan() || amount % 1000 != 0) {
-                        amount = Integer.parseInt(JOptionPane.showInputDialog("Invalid amount, please try again"));
+                    int amount = Integer.parseInt(JOptionPane.showInputDialog("Πόσο θέλεις να πληρώσεις? (Πρέπει να είναι πολλαπλάσιο του 1000)"));
+                    while(amount < 0 || amount > currentPlayer.getMoney() || amount > currentPlayer.getLoan() || amount % 1000 != 0) {
+                        amount = Integer.parseInt(JOptionPane.showInputDialog("Μη έγκυρο ποσό, προσπαθήστε ξανά"));
                     }
 
-                    g.getCurrentPlayer().addMoney(-amount);
-                    g.getCurrentPlayer().addLoan(-amount);
+                    currentPlayer.addMoney(-amount);
+                    currentPlayer.addLoan(-amount);
 
                 } catch (Exception e){
+                    this.showMessage("Μη έγκυρο input, το δάνειο δεν πληρώνεται αυτόν τον γύρο");
                     System.err.println(e.getMessage());
                 }
 
-                JOptionPane.showMessageDialog(null, "Το δάνειο πληρώθηκε");
+                this.showMessage("Το δάνειο πληρώθηκε");
             }
             else if(reply == JOptionPane.NO_OPTION){
-                JOptionPane.showMessageDialog(null, "Το δάνειο δεν πληρώθηκε");
+                this.showMessage("Το δάνειο δεν πληρώθηκε");
             }
         }
-        else if( g.getCurrentPlayer().getMoney() < g.getCurrentPlayer().getLoan()){
-            JOptionPane.showMessageDialog(null, "Δεν έχεις αρκετά λεφτά για να πληρώσεις το δάνειο");
+        else if( currentPlayer.getMoney() < currentPlayer.getLoan()){
+            this.showMessage("Δεν έχεις αρκετά λεφτά για να πληρώσεις το δάνειο");
         }
 
-        if(g.getTotalMonths() != g.getCurrentPlayer().getMonth()){
-            g.getCurrentPlayer().setPosition(0,0);
-            g.getCurrentPlayer().setMonth(g.getCurrentPlayer().getMonth() + 1);
-            if(g.getCurrentPlayer().getMonth() != g.getInactivePlayer().getMonth())
+
+        if(g.getTotalMonths() != currentPlayer.getMonth()) {
+            this.showMessage("Παίρνεις 3500$ και μεταφέρεσαι στην αρχική θέση");
+            currentPlayer.setPosition(0, 0);
+            if (currentPlayer.getMonth() == g.getInactivePlayer().getMonth()){
                 g.incrementMonth();
-            g.board.assignDays();
+                g.board.assignDays();
+            }
+
+            currentPlayer.setMonth(currentPlayer.getMonth() + 1);
         } else {
-            g.getCurrentPlayer().pay(g.getCurrentPlayer().getBills());
-            g.getCurrentPlayer().setFinished(true);
+            currentPlayer.pay(currentPlayer.getBills());
+            currentPlayer.setFinished(true);
             if(g.getInactivePlayer().hasFinished()){
                 g.setHasEnded(true);
             }
         }
 
-        g.getCurrentPlayer().setEndTurn(true);
+        currentPlayer.setEndTurn(true);
 
     }
-
 }

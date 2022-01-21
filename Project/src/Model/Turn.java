@@ -25,6 +25,8 @@ public class Turn implements Serializable {
         return this.currentMonth;
     }
 
+    //Accessor(selector): Returns the month length of the game
+    //Postcondition: Total months returned
     public int getTotalMonths(){
         return this.totalMonths;
     }
@@ -42,6 +44,8 @@ public class Turn implements Serializable {
         return this.currentPlayer;
     }
 
+    //Accessor(selector): Returns the player who is not playing
+    //Postcondition: Returned inactive player
     public character getInactivePlayer(){
         return this.inactivePlayer;
     }
@@ -66,21 +70,10 @@ public class Turn implements Serializable {
         this.inactivePlayer = p;
     }
 
-    //Observer: Returns true if this month is the final month, otherwise returns false
-    //Postcondition: Returned true if it's the final month
-    public boolean isFinalMonth(){
-        return currentMonth == totalMonths;
-    }
-
     //Observer: Returns how many months the game has left
     //Postcondition: Returned how many months are left
     public int monthsLeft(){
         return totalMonths - currentMonth;
     }
 
-    //Observer: Returns true if the turn has finished, else returns false
-    //Postcondition: Returned true if the turn finished, else false
-    public boolean turnHasFinished(){
-        return false;
-    }
 }

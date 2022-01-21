@@ -26,7 +26,7 @@ public class character implements PlayerInterface{
     private boolean sell;
     private boolean endTurn;
     private boolean finished;
-    private transient ArrayList<Card> cards = new ArrayList<>();
+    private ArrayList<Card> cards = new ArrayList<>();
 
     //Constructor: Constructs a new character(Player) and sets all the values
     //Postcondition: constructed a character set its values and its id as the given number
@@ -83,15 +83,9 @@ public class character implements PlayerInterface{
         this.dice.rollDice();
     }
 
-    //Observer: Returns true if the character has ended his turn otherwise returns false
-    //Postcondition: Returns if the character has ended his turn
-    public boolean hasEndedTurn(){
-        return this.endTurn;
-    }
-
     //Observer: Shows the selected card to the character
     //Postcondition: Selected card on screen and character chose action
-    private void selectCard(DealCard c){
+    public void selectCard(DealCard c){
         JFrame parent = new JFrame();
 
         JDialog frame = new JDialog(parent, c.getType(), true);
@@ -174,7 +168,15 @@ public class character implements PlayerInterface{
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        selectCard((DealCard) c);
+                        if(sell){ //If the player can sell open it and dispose it only when the player sells a card
+                            selectCard((DealCard) c);
+                            if(!sell){
+                                frame.dispose();
+                            }
+                        } else {
+                            selectCard((DealCard) c);
+                            //This happens if the player only wants to see his cards and can close the window at any time
+                        }
                     }
                 });
                 frame.add(button);
@@ -229,16 +231,10 @@ public class character implements PlayerInterface{
             this.money -= amount;
         }
         else{
-            this.addLoan(this.calculateLoan(amount));
-            this.addMoney(this.calculateLoan(amount));
+            this.addLoan(this.calculateLoan(amount - money));
+            this.addMoney(this.calculateLoan(amount - money));
             pay(amount);
         }
-    }
-
-    //Transformer(mutative): Sets the endTurn variable to true
-    //Postcondition: The endTurn variable is set to true
-    public void Played(){
-        endTurn = true;
     }
 
 
@@ -270,12 +266,6 @@ public class character implements PlayerInterface{
     //Postcondition: cards arraylist returned
     public ArrayList<Card> getCards(){
         return this.cards;
-    }
-
-    //Accessor(selector): Returns the sell value of the character
-    //Postcondition: sell returned
-    public boolean getSell(){
-        return this.sell;
     }
 
     //Accessor(selector): Returns the x position of the character

@@ -13,6 +13,7 @@ public class Charity extends MailCard{
     //Postcondition: Amount added to jackpot
     //@param g is the controller
     public void action(Controller g){
+        g.playSound("win.wav");
         g.getCurrentPlayer().pay(this.getEuro());
         g.board.addToJackpot(this.getEuro());
     }

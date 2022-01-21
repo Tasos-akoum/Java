@@ -13,8 +13,9 @@ public class BillCard extends MailCard{
 
     //Transformer(mutative): The character pays the euro value
     //Postcondition: Character paid the value
-    //@param c is the current player
+    //@param g is the game controller
     public void action(Controller g){
+        g.playSound("jackpot.wav");
         g.getCurrentPlayer().addBills(this.getEuro());
     }
 }

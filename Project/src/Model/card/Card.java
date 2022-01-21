@@ -21,6 +21,8 @@ public abstract class Card{
         this.type = type;
     }
 
+    //Transformer(mutative): Shows card on screen
+    //Postcondition: Card displayed
     public abstract void showCard(Controller g);
 
     //Transformer(mutative): Does some action
@@ -34,12 +36,6 @@ public abstract class Card{
         return this.type;
     }
 
-
-    //Observer:Returns true if the card can be sold(If the type is "Deal")
-    //Postcondition: Returned true if it can be sold, false otherwise
-    public boolean canBeSold(){
-        return type.equals("Deal");
-    }
 
     //Accessor(selector): Returns the message of the card
     //Postcondition: Message returned

@@ -46,6 +46,8 @@ public class View extends JFrame{
     private JButton endTurn1, endTurn2;
     private JButton showCards1, showCards2;
 
+    //Constructor: Constructs a new View object which is the user interface and initializes everything needed to play the game
+    //Postcondition: Window opened with everything set and the can start
     public View(){
         cldr = this.getClass().getClassLoader();
         game = new Controller();
@@ -240,15 +242,13 @@ public class View extends JFrame{
             }
         }
 
-        tileDistance = 0;
-
         //Initialized each date label with days and dates
         this.setDays(Color.orange);
-
     }
 
-    //Transformer(mutative):Sets a date to each tile
+    //Transformer(mutative):Sets a date to each tile with a colored background
     //Postcondition: days set
+    //@param color is the color of the label's background
     private void setDays(Color color){
         int tiles_width = 190;
         int tiles_height = 108;
@@ -288,6 +288,8 @@ public class View extends JFrame{
     }
 
     //Transformer(mutative): Update the days and dates everytime a player goes to the next month
+    //Postcondition: Days updated
+    //@param color is the color of the label's background
     private void updateDays(Color color) {
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 7; j++){
@@ -463,13 +465,13 @@ public class View extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 game.endTurn(game.getPlayer(1));
-                if(game.getCurrentMonth() == 2){
-                    updateDays(Color.blue);
+                if(game.getCurrentMonth() == 2){ //Check current month
+                    updateDays(Color.blue); //Update the days on the user interface
                 }
                 else if(game.getCurrentMonth() == 3){
                     updateDays(Color.green);
                 }
-                gameEnd();
+                gameEnd(); //Check if the game has ended
             }
         });
 
@@ -477,17 +479,19 @@ public class View extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 game.endTurn(game.getPlayer(2));
-                if(game.getCurrentMonth() == 2){
-                    setDays(Color.blue);
+                if(game.getCurrentMonth() == 2){ //Check current month
+                    updateDays(Color.blue); //Update the days on the user interface
                 }
                 else if(game.getCurrentMonth() == 3){
-                    setDays(Color.green);
+                    updateDays(Color.green);
                 }
-                gameEnd();
+                gameEnd(); //Check if the game has ended
             }
         });
     }
 
+    //Transformer(mutative): Update each player's pawn position
+    //Postcondition: Player's pawn updated
     private void updatePlayerPosition(){
         character c1 = game.getPlayer(1);
         character c2 = game.getPlayer(2);
@@ -513,10 +517,16 @@ public class View extends JFrame{
     //Transformer(mutative): Updates the infobox info
     //Postcondition: infobox info updated
     private void updateInfoBox(){
-        currentPlayer.setText("Current Player: Player" + game.getCurrentPlayer().getId());
+        character c = game.getCurrentPlayer();
+
+        currentPlayer.setText("Current Player: Player" + c.getId());
+        if(c.getId() == 1)
+            currentPlayer.setForeground(Color.blue);
+        else
+            currentPlayer.setForeground(Color.orange); //Orange instead of yellow for better clarity
+
         monthsLeft.setText("Months left: " + game.getMonthsLeft());
 
-        character c = game.getCurrentPlayer();
         Tile tile = game.board.getTile(c.getPositionX(), c.getPositionY());
 
         if(tile instanceof BuyerTile){
@@ -568,9 +578,23 @@ public class View extends JFrame{
         dice2.setIcon(new ImageIcon(image));
     }
 
-    //Transformer(mutative): If the player can end turn, change color to the end turn button
-    //Postcondition: End turn button color changed
-    private void updateEndTurnButton(){
+    //Transformer(mutative): Update the buttons so each player can see if it's his turn
+    //Postcondition: Buttons updated
+    private void updateButtons(){
+        if(game.getCurrentPlayer().getId() != 1){
+            rollDiceButton1.setBackground(Color.black);
+            getLoanButton1.setBackground(Color.black);
+
+            rollDiceButton2.setBackground(null);
+            getLoanButton2.setBackground(null);
+        } else {
+            rollDiceButton2.setBackground(Color.black);
+            getLoanButton2.setBackground(Color.black);
+
+            rollDiceButton1.setBackground(null);
+            getLoanButton1.setBackground(null);
+        }
+
         if(!game.getPlayer(1).canEndTurn())
             endTurn1.setBackground(Color.black);
         else
@@ -587,9 +611,10 @@ public class View extends JFrame{
     private void gameEnd(){
         if(game.hasEnded()) {
             if(game.getWinner() != 0)
-                JOptionPane.showMessageDialog(null, "Νίκησε ο παίχτης " +  game.getWinner() + "!");
+                JOptionPane.showMessageDialog(null, "Νίκησε ο παίχτης " +  game.getWinner() + " με σκορ "  + game.getPlayer(game.getWinner()).getScore() + "!",
+                        "Τέλος παιχνιδιού", JOptionPane.INFORMATION_MESSAGE);
             else
-                JOptionPane.showMessageDialog(null, "Το παιχνίδι πήγε ισοπαλία");
+                JOptionPane.showMessageDialog(null, "Το παιχνίδι πήγε ισοπαλία", "Τέλος παιχνιδιού", JOptionPane.INFORMATION_MESSAGE);
 
             this.dispose();
             int choice = JOptionPane.showConfirmDialog(null, "Would you like to start a new game?","New game" ,JOptionPane.YES_NO_OPTION);
@@ -605,6 +630,8 @@ public class View extends JFrame{
     //Class Update extends class Thread and is responsible for updating the info of the game every 300 milliseconds
     private class Update extends Thread{
         @Override
+        //Transformer(mutative): Updates the basic information needed on the user interface
+        //Postcondition: Information updated
         public void run() {
             try{
                 while(true){
@@ -612,7 +639,7 @@ public class View extends JFrame{
                     updatePlayerPosition();
                     updateInfoBox();
                     updateDiceImage();
-                    updateEndTurnButton();
+                    updateButtons();
                     jackpot_value.setText("Jackpot: " + game.board.getJackpot());
                     Thread.sleep(300);
                 }
@@ -622,8 +649,4 @@ public class View extends JFrame{
         }
     }
 
-    public static void main(String[] args) {
-        View view = new View();
-
-    }
 }

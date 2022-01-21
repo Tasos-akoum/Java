@@ -19,19 +19,20 @@ public class Controller{
     private boolean hasEnded;
     private final character c1, c2;
     public Board board;
-    private Turn turn = new Turn();
+    private final Turn turn;
     private URL imageURL;
-    private ClassLoader cldr = this.getClass().getClassLoader();
+    private final ClassLoader cldr ;
     private Image image;
 
     //Constructor: Constructs a game controller
     //Postcondition: Constructed a controller and sets the game up to start
     public Controller(){
         board = new Board();
+        turn = new Turn();
+        cldr = this.getClass().getClassLoader();
 
         c1 = new character(1);
         c2 = new character(2);
-
 
         c1.setPosition(0, 0);
         c2.setPosition(0, 0);
@@ -53,8 +54,8 @@ public class Controller{
 
 
 
-    //Observer: Returns true if the game has started, otherwise returns false
-    //Postcondition: Return if the game has started
+    //Observer: Returns true if the game has ended, otherwise returns false
+    //Postcondition: Return if the game has ended
     public boolean hasEnded(){
         return this.hasEnded;
     }
@@ -359,6 +360,7 @@ public class Controller{
 
     //Transformer(mutative): If player c can roll the dice, he rolls the dice
     //Postcondition: Player rolled the dice if able, else did nothing
+    //@param c is the player who rolls the dice
     public void rollDice(character c){
         if(c.canRoll()){
             this.playSound("dice.wav");
@@ -375,20 +377,21 @@ public class Controller{
     //Postcondition: Loan given
     //@param c is the player getting the loan
     public void getLoan(character c){
-        JFrame frame = new JFrame();
         try {
             int loan = Integer.parseInt(JOptionPane.showInputDialog("How much money do you want? (Must be a multiple of 1000"));
             if (loan > 0 && loan % 1000 == 0)
                 c.addMoney(loan);
             else
-                JOptionPane.showMessageDialog(frame ,"Invalid amount");
+                JOptionPane.showMessageDialog(null ,"Invalid amount");
         } catch (Exception e){
             System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null ,"Invalid input");
         }
     }
 
     //Transformer(mutative): If the player c can end turn, ends turn
     //Postcondition: If able the player ended turn, else did nothing
+    //@param c is the player who ends his turn
     public void endTurn(character c){
         if(c.canEndTurn()){
             changeCurrentPlayer();
@@ -477,8 +480,7 @@ public class Controller{
         }
         catch(Exception ex)
         {
-            System.out.println("Error with playing sound.");
-            ex.printStackTrace();
+            System.err.println(ex.getMessage());
         }
     }
 

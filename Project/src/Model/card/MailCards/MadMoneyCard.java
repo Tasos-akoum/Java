@@ -13,11 +13,12 @@ public class MadMoneyCard extends MailCard{
 
     //Transformer(mutative):Takes money from the inactive character and gives it to the current
     //Postcondition: Money transfer successful
-    //@param c is the current character
+    //@param g is the game controller
     public void action(Controller g){
         character currentPlayer = g.getCurrentPlayer();
         character inactivePlayer = g.getInactivePlayer();
 
+        g.playSound("add_money.wav");
         inactivePlayer.pay(this.getEuro());
         currentPlayer.addMoney(this.getEuro());
     }

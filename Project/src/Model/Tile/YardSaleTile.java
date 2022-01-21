@@ -14,14 +14,16 @@ public class YardSaleTile extends Tile{
     @Override
     //Transformer(mutative): Player rolls dice and pays 100 * dice value
     //Postcondition: Player paid the value
-    //@param c is the current player
+    //@param g is the game controller
     public void action(Controller g){
-        g.getCurrentPlayer().rollDice();
-        g.getCurrentPlayer().pay(g.getCurrentPlayer().getDice().getValue() * 100);
-        g.playSound("doom.wav");
-        this.showMessage("Ο παίχτης" + g.getCurrentPlayer().getId() + " πλήρωσε " + g.getCurrentPlayer().getDice().getValue() * 100 + "$");
+        character currentPlayer = g.getCurrentPlayer();
 
-        g.getCurrentPlayer().setEndTurn(true);
+        currentPlayer.rollDice();
+        currentPlayer.pay(currentPlayer.getDice().getValue() * 100);
+        g.playSound("doom.wav");
+        this.showMessage("Ο παίχτης" + currentPlayer.getId() + " πλήρωσε " + currentPlayer.getDice().getValue() * 100 + "$");
+
+        currentPlayer.setEndTurn(true);
 
     }
 }

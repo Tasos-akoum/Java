@@ -3,7 +3,10 @@ package Model.Tile;
 import Controller.Controller;
 import Model.Board;
 import Model.Player.character;
+import Model.card.MailCards.MailCard;
 import Model.card.MailCards.MoveToDealBuyer;
+
+import java.util.ArrayList;
 
 //Class MessageTile implements the message tile
 public class MessageTile extends Tile{
@@ -26,26 +29,34 @@ public class MessageTile extends Tile{
     @Override
     //Transformer(mutative):Makes the player draw 1 or 2 mail cards and complete their actions
     //Postcondition: Cards drawn and actions completed
+    //@param g is the game controller
     public void action(Controller g) {
-        character c = g.getCurrentPlayer();
+        character currentPlayer = g.getCurrentPlayer();
         Board board = g.board;
+        ArrayList<MailCard> mailCards = board.getMailCards();
+
 
         for(int i = 0; i < this.value; i++){
-                g.playSound("draw.wav");
-                g.getCurrentPlayer().drawCard(board.getMailCards().get(board.getMailCards().size() - 1), g);
-                board.getDisposedMailCards().add(board.getMailCards().get(board.getMailCards().size() - 1));
-                board.getMailCards().remove(board.getMailCards().size() - 1);
+            if(this.value == 2 && i == 0){
+                while(mailCards.get(mailCards.size() - 1) instanceof MoveToDealBuyer){
+                    board.getDisposedMailCards().add(mailCards.get(mailCards.size() - 1));
+                    mailCards.remove(mailCards.size() - 1);
 
-                if(board.getMailCards().size() == 0)
+                    if(mailCards.size() == 0){
+                        board.replenishMailCards();
+                    }
+                }
+            }
+                g.playSound("draw.wav");
+                currentPlayer.drawCard(mailCards.get(mailCards.size() - 1), g);
+                board.getDisposedMailCards().add(mailCards.get(mailCards.size() - 1));
+                mailCards.remove(mailCards.size() - 1);
+
+                if(mailCards.size() == 0)
                     board.replenishMailCards();
         }
 
-        c.setEndTurn(true);
+        currentPlayer.setEndTurn(true);
 
-    }
-
-    public static void main(String[] args) {
-        MessageTile tile = new MessageTile(2);
-        tile.action(new Controller());
     }
 }

@@ -3,10 +3,9 @@ package Model.Tile;
 import Controller.Controller;
 
 import javax.swing.*;
-import java.io.Serializable;
 
 //Abstract class Tile implements the basic functionality of the tiles
-public abstract class Tile implements Serializable {
+public abstract class Tile{
     private final String type;
     private String day;
 
@@ -21,8 +20,7 @@ public abstract class Tile implements Serializable {
     public abstract void action(Controller g);
 
     public void showMessage(String message){
-        JFrame frame = new JFrame("Notification");
-        JOptionPane.showMessageDialog(frame, message);
+        JOptionPane.showMessageDialog(null, message, this.type, JOptionPane.INFORMATION_MESSAGE);
     }
 
     //Accessor(selector): Returns the type of the tile
